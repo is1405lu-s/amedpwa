@@ -2,6 +2,7 @@ import React from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
+import { Route, Switch, Redirect } from 'react-router-dom'
 
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
@@ -16,12 +17,15 @@ class CreatePatient extends React.Component {
             mobileNo: '',               // INT
             sex: '',                    // VARCHAR
             villageName: '',            // VARCHAR
-            dateOfBirth: new Date()     // DATE
+            dateOfBirth: new Date(),     // DATE
+
+            createdPatient: false
         }
 
         this.handleChange = this.handleChange.bind(this)
         this.resetState = this.resetState.bind(this)
         this.handleDateChange = this.handleDateChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     handleChange(event) {
@@ -50,6 +54,30 @@ class CreatePatient extends React.Component {
                 dateOfBirth: '',     // DATE
             }
         )
+    }
+
+
+    handleSubmit(event) {
+        event.preventDefault();
+        var patient = {
+            name: this.state.name,                   // VARCHAR
+            nationalID: this.props.nationalID,             // INT
+            mobileNo: this.state.mobileNo,               // INT
+            sex: this.state.sex,                    // VARCHAR
+            villageName: this.state.villageName,            // VARCHAR
+            dateOfBirth: this.state.dateOfBirth,
+        }
+        fetch('http://localhost:3000/patient', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(patient)
+        })
+        .then(res => res.json(patient))
+        .then(
+          (result) => {
+            console.log(result);
+              this.setState({createdPatient: true, createPatient: patient});
+          });
     }
 
     render() {
@@ -150,7 +178,7 @@ class CreatePatient extends React.Component {
                             onChange={this.handleDateChange}
                             name="dateOfBirth"
                             type="date"
-                            placeholderText="MM/DD/YYYY"
+                            placeholderText="MM-DD-YYYY"
                         />
                     </Form.Group>
 
@@ -161,6 +189,15 @@ class CreatePatient extends React.Component {
                         
                     </ButtonToolbar>
             </Form>
+
+                {
+                    this.state.createdPatient === false ? '' : <Redirect to={{
+                    pathname: '/alaf/',
+                    patient: this.state.createPatient
+                    }}
+                    />
+                }
+
         </div>
         )
     }
