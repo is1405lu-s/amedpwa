@@ -2,7 +2,7 @@
 workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
 
 if (typeof idb === "undefined") {
-  self.importScripts('static/js/idb.js');
+  self.importScripts('idb.js');
 }
 
 self.addEventListener('install', event => {
@@ -14,10 +14,9 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
 	console.log('Service Worker: Activated');
   createDB();
+  //createAnotherDB();
   event.waitUntil(self.clients.claim())
 });
-
-
 
 function createDB() {
   fetch('http://localhost:3000/patient').then(res => res.json())
@@ -32,15 +31,28 @@ function createDB() {
             for(var i = 0; i < result.length; i++) {
               store.put({nationalID: result[i].nationalID, name: result[i].name, mobileNo: result[i].mobileNo, sex: result[i].sex, village: result[i].village, dateOfBirth: result[i].dateOfBirth});
             }
+            var store = upgradeDB.createObjectStore('symptoms_sheet', {
+              keyPath: 'ID'
+            });
           })
         });
 }
 
+/*
+function createAnotherDB() {
+  idb.openDb('amedic', 1, function(upgradeDB) {
+    var store = upgradeDB.createObjectStore('symptoms_sheet', {
+      keyPath: 'ID'
+    });
+  });
+}
+*/
 
 const queue = new workbox.backgroundSync.Queue('myQueueName');
 
 //gotta disconnect to the internet
 self.addEventListener('fetch', (event) => {
+
   // Clone the request to ensure it's save to read when
  //readDB();
   // adding to the Queue.
@@ -51,12 +63,15 @@ self.addEventListener('fetch', (event) => {
   console.log('body: ' + event.request.body);
   console.log('header: ' + event.request.header);
   */
+
+
   const promiseChain = fetch(event.request.clone())
   .catch((err) => {
     return queue.addRequest(event.request);
   });
 
   event.waitUntil(promiseChain);
+
 });
 
 function readDB(key) {

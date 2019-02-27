@@ -21,7 +21,6 @@ ReactDOM.render(<Router><Routes /></Router>, document.getElementById('root'));
 
 //registering serviceWorker
 serviceWorker();
-
 /*
 function createIndexedDB() {
 	openDb('amedic', 1, function(upgradeDB) {
