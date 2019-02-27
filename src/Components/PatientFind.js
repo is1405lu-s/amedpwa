@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import CreatePatient from './CreatePatient'
 import ScreeningForm from './ScreeningForm'
 import { Route, Switch, Redirect } from 'react-router-dom'
+import {openDb} from "../idb";
 
 class PatientFind extends React.Component {
 
@@ -37,13 +38,17 @@ class PatientFind extends React.Component {
           // Note: it's important to handle errors here
           // instead of a catch() block so that we don't swallow
           // exceptions from actual bugs in components.
-          (error) => {
-            this.setState({
-              //isLoaded: true,
-              createPatient: true,
-              error
-            });
-          })
+            (error) => {
+                var key = parseInt(this.state.nationalID);
+                const openRequest = openDb("amedic", 1);
+                openRequest.then(db => {
+                    return db.transaction("patient")
+                        .objectStore("patient").get(key);
+                }).then(obj => this.setState({
+                    foundPatient: obj
+
+                }));
+            })
 
         /*
         if(this.foundPatient) {
