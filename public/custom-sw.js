@@ -1,14 +1,45 @@
 // See https://developers.google.com/web/tools/workbox/guides/configure-workbox
-workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js');
+
+//workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
+
+if (workbox) {
+  console.log(`Yay! Workbox is loaded 🎉`);
+} else {
+  console.log(`Boo! Workbox didn't load 😬`);
+}
+
+const precacheResources = [
+  '/',
+  'Components/CreatePatient.js',
+  'Component/DiagnoseComponent.js',
+  'Components/Header.js',
+  'Components/PatientFind.js',
+  'Components/reviewForm.js', 
+  'Components/ScreeningForm.js',
+  'Components/SymptomComponent.js',
+  'Components/TreatmentComponent.js', 
+  'Components/ViewPatient.js', 
+  'Components/ViewVisit.js', 
+  'Components/VisitTD.js', 
+  'routes/Routes.js', 
+  'App.css', 
+  'App.js', 
+  'index.css', 
+  'index.js', 
+  'logo.svg'
+];
 
 if (typeof idb === "undefined") {
   self.importScripts('idb.js');
 }
 
 self.addEventListener('install', event => {
-  console.log('Service worker: Installed')
+  console.log('Service worker: Installed');
+    self.skipWaiting().
+
   event.waitUntil(
-    self.skipWaiting())
+    workbox.precaching.precacheAndRoute(precacheResources));
 });
 
 self.addEventListener('activate', event => {
@@ -87,8 +118,6 @@ function readDB(key) {
 }
 
 // We need this in Webpack plugin (refer to swSrc option): https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin#full_injectmanifest_config
-workbox.precaching.precacheAndRoute(self.__precacheManifest);
-
 workbox.routing.registerNavigationRoute("./index.html", {
 
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],

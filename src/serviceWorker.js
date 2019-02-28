@@ -19,7 +19,7 @@ const isLocalhost = Boolean(
     );
 
 export default function register() {
-  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
+  if ( 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(process.env.PUBLIC_URL, window.location);
     if (publicUrl.origin !== window.location.origin) {
@@ -108,76 +108,6 @@ function checkValidServiceWorker(swUrl) {
       );
   });
 }
-
-/* 
-//All patients, prints name of second row
-              fetch('http://localhost:3000/patient').then(res => res.json())
-              .then(
-                (result) => {
-                  console.log(result[1].name);
-                });
-                */
-
-/*
-function createIndexedDB() {
-  if (!('indexedDB' in window)) {return null;}
-  return idb.open('dashboardr', 1, function(upgradeDb) {
-    if (!upgradeDb.objectStoreNames.contains('patient')) {
-      const eventsOS = upgradeDb.createObjectStore('patient', {keyPath: 'nationalID'});
-    }
-  });
-}
-
-const dbPromise = createIndexedDB();
-
-function saveEventDataLocally(events) {
-  if (!('indexedDB' in window)) {return null;}
-  return dbPromise.then(db => {
-    const tx = db.transaction('patient', 'readwrite');
-    const store = tx.objectStore('patient');
-    return Promise.all(events.map(event => store.put(patient)))
-    .catch(() => {
-      tx.abort();
-      throw Error('Patient were not added to the store');
-    });
-  });
-}
-
-function getLocalEventData() {
-  if (!('indexedDB' in window)) {return null;}
-  return dbPromise.then(db => {
-    const tx = db.transaction('patient', 'readonly');
-    const store = tx.objectStore('patient');
-    return store.getAll();
-  });
-}
-
-function loadContentNetworkFirst() {
-  getServerData()
-  .then(dataFromNetwork => {
-    updateUI(dataFromNetwork);
-    saveEventDataLocally(dataFromNetwork)
-    .then(() => {
-      setLastUpdated(new Date());
-      messageDataSaved();
-    }).catch(err => {
-      messageSaveError();
-      console.warn(err);
-    });
-  }).catch(err => {
-    console.log('Network requests have failed, this is expected if offline');
-    getLocalEventData()
-    .then(offlineData => {
-      if (!offlineData.length) {
-        messageNoData();
-      } else {
-        messageOffline();
-        updateUI(offlineData); 
-      }
-    });
-  });
-}
-*/
 
 export function unregister() {
   if ('serviceWorker' in navigator) {
