@@ -10,24 +10,24 @@ if (workbox) {
 }
 
 const precacheResources = [
-  '/',
-  'Components/CreatePatient.js',
-  'Component/DiagnoseComponent.js',
-  'Components/Header.js',
-  'Components/PatientFind.js',
-  'Components/reviewForm.js', 
-  'Components/ScreeningForm.js',
-  'Components/SymptomComponent.js',
-  'Components/TreatmentComponent.js', 
-  'Components/ViewPatient.js', 
-  'Components/ViewVisit.js', 
-  'Components/VisitTD.js', 
-  'routes/Routes.js', 
-  'App.css', 
-  'App.js', 
-  'index.css', 
-  'index.js', 
-  'logo.svg'
+'/',
+'Components/CreatePatient.js',
+'Component/DiagnoseComponent.js',
+'Components/Header.js',
+'Components/PatientFind.js',
+'Components/reviewForm.js', 
+'Components/ScreeningForm.js',
+'Components/SymptomComponent.js',
+'Components/TreatmentComponent.js', 
+'Components/ViewPatient.js', 
+'Components/ViewVisit.js', 
+'Components/VisitTD.js', 
+'routes/Routes.js', 
+'App.css', 
+'App.js', 
+'index.css', 
+'index.js', 
+'logo.svg'
 ];
 
 if (typeof idb === "undefined") {
@@ -36,16 +36,13 @@ if (typeof idb === "undefined") {
 
 self.addEventListener('install', event => {
   console.log('Service worker: Installed');
-    self.skipWaiting().
-
-  event.waitUntil(
-    workbox.precaching.precacheAndRoute(precacheResources));
+  self.skipWaiting();
+  workbox.precaching.precacheAndRoute(precacheResources);
 });
 
 self.addEventListener('activate', event => {
 	console.log('Service Worker: Activated');
   createDB();
-  //createAnotherDB();
   event.waitUntil(self.clients.claim())
 });
 
@@ -53,9 +50,7 @@ function createDB() {
   fetch('http://localhost:3000/patient').then(res => res.json())
   .then(
     (result) => {
-      console.log(result[1].nationalID + " " + result[1].mobileNo);
-        //for(var i = 0; i < result.length; i++) {
-          idb.openDb('amedic', 1, function(upgradeDB) {
+      idb.openDb('amedic', 1, function(upgradeDB) {
             var store = upgradeDB.createObjectStore('patient', {
               keyPath: 'nationalID'
             });
@@ -69,32 +64,10 @@ function createDB() {
         });
 }
 
-/*
-function createAnotherDB() {
-  idb.openDb('amedic', 1, function(upgradeDB) {
-    var store = upgradeDB.createObjectStore('symptoms_sheet', {
-      keyPath: 'ID'
-    });
-  });
-}
-*/
-
 const queue = new workbox.backgroundSync.Queue('myQueueName');
 
-//gotta disconnect to the internet
+//disconnect to internet, do stuff, connect to internet
 self.addEventListener('fetch', (event) => {
-
-  // Clone the request to ensure it's save to read when
- //readDB();
-  // adding to the Queue.
-
-  /*
-  console.log('url: ' + event.request.url);
-  console.log('event.request: ' + event.request);
-  console.log('body: ' + event.request.body);
-  console.log('header: ' + event.request.header);
-  */
-
 
   const promiseChain = fetch(event.request.clone())
   .catch((err) => {
