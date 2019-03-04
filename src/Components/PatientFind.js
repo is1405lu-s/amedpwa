@@ -5,6 +5,7 @@ import CreatePatient from './CreatePatient'
 import ScreeningForm from './ScreeningForm'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import {openDb} from 'idb';
+import AuthService from './AuthService';
 
 class PatientFind extends React.Component {
 
@@ -20,6 +21,8 @@ class PatientFind extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleStudyIDChange = this.handleStudyIDChange.bind(this)
+    
+      this.Auth = new AuthService();
   }
 
   handleSubmit(event) {
@@ -33,7 +36,7 @@ class PatientFind extends React.Component {
           isLoading: true
         });
 
-        fetch(`http://localhost:3000/patient/${this.state.nationalID}`, { signal }).then(res => res.json())
+        this.Auth.fetch(`http://localhost:3000/patient/${this.state.nationalID}`, { signal }).then(res => res.json())
         .then(
           (result) => {
             console.log(result)
@@ -95,6 +98,9 @@ class PatientFind extends React.Component {
       
       return (
       <div class="container">
+        { 
+        this.Auth.loggedIn() ? '' : <Redirect to='/login' />
+     }
       <h1>Patient search</h1>
 
       <Form>
