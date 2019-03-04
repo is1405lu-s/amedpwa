@@ -13,7 +13,7 @@ class ScreeningForm extends React.Component {
             cough: '',                          // BOOL
             coughDays: '',                      // INT
             diarrhoea: '',                      // BOOL
-            diarrhoeaDays: '',                  // BOOL
+            diarrhoeaDays: '',                  // INT
             bloodInStool: '',                   // VARCHAR
             fever: '',                          // INT
             feverDays: '',                      // INT
@@ -27,7 +27,7 @@ class ScreeningForm extends React.Component {
             difficultiesToSee: '',              // BOOL
             difficultiesToSeeDays: '',          // INT
             chestIndraw: '',                    // VARCHAR
-            breathingFreq: '',                      // INT
+            breathingFreq: '',                  // INT
             sleepy: '',                         // VARCHAR
             unconscious: '',                    // VARCHAR
             palmarPalor: '',                    // VARCHAR
@@ -53,8 +53,12 @@ class ScreeningForm extends React.Component {
 
     handleSubmit(event) {
         // TODO: Implement validation here.
+        if(this.state.coughDays === '') { this.setState({coughDays: 0}) }
+        if(this.state.diarrhoeaDays === '') { this.setState({diarrhoeaDays: 0}) }
+        if(this.state.feverDays === '') { this.setState({feverDays: 0}) }
+        if(this.state.redEyesDays === '') { this.setState({redEyesDays: 0}) }
+        if(this.state.difficultiesToSeeDays === '') { this.setState({difficultiesToSeeDays: 0}) }
 
-        alert('Submitted form!');
         console.log(this.state)
         this.setState({submittedForm: true})
         // event.preventDefault();
@@ -62,33 +66,32 @@ class ScreeningForm extends React.Component {
 
     render() {
         return (
-        
             <div class="container">
-            <h1>Ask and look assessment form</h1>
+                <h1>Ask and look assessment form</h1>
                 <Form onSubmit={this.handleSubmit}>
 
-                <Form.Group controlId="formStudyID">
-                    <Form.Label>Patient name</Form.Label>
-                    <Form.Control 
-                        readOnly 
-                        name="patient" 
-                        value={typeof(this.props.location.patient) === 'undefined' ? 'No patient found.' : this.props.location.patient.name}
-                        onChange={this.handleChange}
-                        type="text" 
-                        placeholder={typeof(this.props.location.patient) === 'undefined' ?
-                            'No patient found.' : this.props.location.patient.name}
-                    />
-                </Form.Group>
+                    <Form.Group controlId="formStudyID">
+                        <Form.Label>Patient name</Form.Label>
+                        <Form.Control
+                            readOnly
+                            name="patient"
+                            value={typeof(this.props.location.patient) === 'undefined' ? 'No patient found.' : this.props.location.patient.name}
+                            onChange={this.handleChange}
+                            type="text"
+                            placeholder={typeof(this.props.location.patient) === 'undefined' ?
+                                'No patient found.' : this.props.location.patient.name}
+                        />
+                    </Form.Group>
 
                     <Form.Group controlId="formDescription">
                         <Form.Label>Description</Form.Label>
-                        <Form.Control 
-                            required 
-                            name="description" 
-                            value={this.state.description} 
-                            onChange={this.handleChange} 
-                            type="description" 
-                            placeholder="Enter a description." 
+                        <Form.Control
+                            required
+                            name="description"
+                            value={this.state.description}
+                            onChange={this.handleChange}
+                            type="description"
+                            placeholder="Enter a description."
                         />
                     </Form.Group>
 
@@ -132,7 +135,7 @@ class ScreeningForm extends React.Component {
                             onChange={this.handleChange}
                             value={this.state.diarrhoeaDays}
                             type="number"
-                            placeholder="Enter how many days the patient has been experiencing diarrhoea." 
+                            placeholder="Enter how many days the patient has been experiencing diarrhoea."
                         />
                     </Form.Group>
 
@@ -145,7 +148,7 @@ class ScreeningForm extends React.Component {
                             value={this.state.bloodInStool}
                             type="description"
                             placeholder="Enter a description."
-                        /> 
+                        />
                     </Form.Group>
 
                     <Form.Group controlId="formFever">
@@ -157,7 +160,7 @@ class ScreeningForm extends React.Component {
                             value={this.state.fever}
                             type="number"
                             placeholder="Enter degrees."
-                        /> 
+                        />
                     </Form.Group>
 
                     <Form.Group controlId="formFever">
@@ -169,7 +172,7 @@ class ScreeningForm extends React.Component {
                             value={this.state.feverDays}
                             type="number"
                             placeholder="Enter amount of days."
-                        /> 
+                        />
                     </Form.Group>
 
                     <Form.Group controlId="formConvulsions">
@@ -181,7 +184,7 @@ class ScreeningForm extends React.Component {
                             value={this.state.convulsions}
                             type="description"
                             placeholder="Enter a description."
-                        /> 
+                        />
                     </Form.Group>
 
                     <Form.Check
@@ -233,7 +236,7 @@ class ScreeningForm extends React.Component {
                     />
 
                     <Form.Group controlId="formRedEyes" style={this.state.redEyes ? {display: ''} : {display: 'none'}}>
-                    <br />
+                        <br />
                         <Form.Label>For how many days has the patient had red eyes?</Form.Label>
                         <Form.Control
                             required={this.state.redEyes}
@@ -242,7 +245,7 @@ class ScreeningForm extends React.Component {
                             value={this.state.redEyesDays}
                             type="number"
                             placeholder="Enter days."
-                        /> 
+                        />
                     </Form.Group>
 
                     <br />
@@ -269,7 +272,7 @@ class ScreeningForm extends React.Component {
                             value={this.state.difficultiesToSeeDays}
                             type="number"
                             placeholder="Enter days."
-                        /> 
+                        />
                     </Form.Group>
 
                     <Form.Group controlId="formChestIndraw">
@@ -281,21 +284,19 @@ class ScreeningForm extends React.Component {
                             value={this.state.chestIndraw}
                             type="description"
                             placeholder="Enter a description."
-                        /> 
+                        />
                     </Form.Group>
-
-                    <Form.Group controlId="formDifficultiesSeeing">
+                    <Form.Group controlId="formBreathingFreq">
                         <Form.Label>What is the patient breathing frequency?</Form.Label>
                         <Form.Control
                             required={this.state.breathingFreq}
-                            name="difficultiesToSeeDays"
+                            name="breathingFreq"
                             onChange={this.handleChange}
                             value={this.state.breathingFreq}
                             type="number"
                             placeholder="Enter breathing frequency."
-                        /> 
+                        />
                     </Form.Group>
-
                     <Form.Group controlId="formSleepy">
                         <Form.Label>Is the patient sleepy?</Form.Label>
                         <Form.Control
@@ -305,9 +306,8 @@ class ScreeningForm extends React.Component {
                             value={this.state.sleepy}
                             type="description"
                             placeholder="Enter a description."
-                        /> 
+                        />
                     </Form.Group>
-
                     <Form.Group controlId="formUnconscious">
                         <Form.Label>Is the patient unconscious?</Form.Label>
                         <Form.Control
@@ -317,9 +317,8 @@ class ScreeningForm extends React.Component {
                             value={this.state.unconscious}
                             type="description"
                             placeholder="Enter a description."
-                        /> 
+                        />
                     </Form.Group>
-
                     <Form.Group controlId="formPalmarPallor">
                         <Form.Label>Is the patient experiencing Palmar Pallor?</Form.Label>
                         <Form.Control
@@ -329,9 +328,8 @@ class ScreeningForm extends React.Component {
                             value={this.state.palmarPalor}
                             type="description"
                             placeholder="Enter a description."
-                        /> 
+                        />
                     </Form.Group>
-
                     <Form.Group controlId="formMuac">
                         <Form.Label>What is the size of the patient middle upper arm circumference?</Form.Label>
                         <Form.Control
@@ -341,9 +339,8 @@ class ScreeningForm extends React.Component {
                             value={this.state.muac}
                             type="description"
                             placeholder="Enter the size."
-                        /> 
+                        />
                     </Form.Group>
-
                     <Form.Group controlId="formSwollenFeet">
                         <Form.Label>Is the patient experiencing swollen feet?</Form.Label>
                         <Form.Control
@@ -353,27 +350,22 @@ class ScreeningForm extends React.Component {
                             value={this.state.swollenFeet}
                             type="description"
                             placeholder="Enter a description."
-                        /> 
+                        />
                     </Form.Group>
-
-                    <Button variant="primary" type="submit">
-                        Submit
+                    <Button className="float-right" variant="primary" type="submit">
+                        Continue
                     </Button>
-
                 </Form>
-
                 {
                     this.state.submittedForm === false ? '' : <Redirect to={{
-                    pathname: '/alaf/review',
-                    patient: this.props.location.patient,
-                    alafForm: this.state
+                        pathname: '/alaf/review',
+                        patient: this.props.location.patient,
+                        alafForm: this.state
                     }}
                     />
                 }
-
             </div>
         )
     }
 }
-
 export default ScreeningForm
