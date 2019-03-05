@@ -9,7 +9,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import {openDb} from 'idb';
 import fetch from '../fetchWithTimeout';
 
-
 class CreatePatient extends React.Component {
 
     constructor() {
@@ -83,7 +82,6 @@ class CreatePatient extends React.Component {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(patient)
         }, 5000)
-        .then(res => res.json(patient))
         .then(
           (result) => {
             console.log(result);
