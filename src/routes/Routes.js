@@ -6,6 +6,7 @@ import PatientFind from '../Components/PatientFind'
 import reviewForm from '../Components/reviewForm'
 import ViewPatient from '../Components/ViewPatient'
 import ViewVisit from '../Components/ViewVisit'
+import DiagnoseComponent from '../Components/DiagnoseComponent'
 
 import { Route, Switch, Redirect } from 'react-router-dom'
 import Login from '../Components/Login'
@@ -34,6 +35,7 @@ export const Routes = () => {
                 <Route path="/patient/:id" component={ViewPatient} />
                 <Route path="/hsavisit/:patientID/:diagnosisID/:hsaID/:symptomID" component={ViewVisit} />
                 <Route path="/hevisit/:patientID/:diagnosisID/:heID" component={ViewVisit} />
+                <Route path="/diagnosis" component={DiagnoseComponent} />
             </Switch>
         </div>
     )

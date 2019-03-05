@@ -56,7 +56,9 @@ class reviewForm extends React.Component {
                 // TODO: Implement check for errors here.
 
                 // TODO: Implemented redirect to view the visit:
+                //this.props.history.push('/diagnosis');
                 this.props.history.push('/patient');
+
         }
 
         render() {
