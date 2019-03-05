@@ -14,7 +14,13 @@ class reviewForm extends React.Component {
                 event.preventDefault()
 
                 var passedForm = this.props.location.alafForm
+                var diagnosis = passedForm.description;
+                var diagnos = {
 
+                    name: diagnosis,
+                    description: "friskare",
+                    class: '',
+                }
                 var postForm = {
                         description: passedForm.description,                    // VARCHAR
                         cough: passedForm.cough,                                // BOOL
@@ -51,6 +57,14 @@ class reviewForm extends React.Component {
                     },
                     body: JSON.stringify(postForm)
                 })
+                fetch ('http://localhost:3000/diagnosis/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(diagnos)
+            })
 
 
                 // TODO: Implement check for errors here.

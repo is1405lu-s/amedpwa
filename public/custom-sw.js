@@ -56,7 +56,7 @@ function createDB() {
               keyPath: 'nationalID'
             });
             for(var i = 0; i < result.length; i++) {
-              store.put({nationalID: result[i].nationalID, name: result[i].name, mobileNo: result[i].mobileNo, sex: result[i].sex, village: result[i].village, dateOfBirth: result[i].dateOfBirth});
+              store.put({national_id: result[i].national_id, name: result[i].name, mobile_no: result[i].mobile_no, sex: result[i].sex, village: result[i].village, date_of_birth: result[i].date_of_birth});
             }
             var store = upgradeDB.createObjectStore('symptoms_sheet', {
               keyPath: 'ID'
