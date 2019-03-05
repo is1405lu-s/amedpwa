@@ -1,6 +1,5 @@
 // See https://developers.google.com/web/tools/workbox/guides/configure-workbox
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js');
-
 //workbox.core.setLogLevel(workbox.core.LOG_LEVELS.debug);
 
 if (workbox) {
@@ -42,7 +41,7 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
 	console.log('Service Worker: Activated');
-  createDB();
+  //createDB();
   event.waitUntil(self.clients.claim())
 });
 
@@ -51,6 +50,8 @@ function createDB() {
   .then(
     (result) => {
       idb.openDb('amedic', 1, function(upgradeDB) {
+        console.log(result[2].name);
+        console.log('skipped');
             var store = upgradeDB.createObjectStore('patient', {
               keyPath: 'nationalID'
             });

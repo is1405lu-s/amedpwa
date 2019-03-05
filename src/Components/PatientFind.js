@@ -36,7 +36,9 @@ class PatientFind extends React.Component {
           isLoading: true
         });
 
-        this.Auth.fetch(`http://localhost:3000/patient/${this.state.nationalID}`, { signal }).then(res => res.json())
+        console.log(this.state.nationalID);
+
+        this.Auth.fetch(`http://localhost:3000/patient/${this.state.nationalID}`, { signal })
         .then(
           (result) => {
             console.log(result)

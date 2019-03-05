@@ -80,7 +80,7 @@ export default class AuthService {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
-        console.log(url);
+
         // Setting Authorization header
         // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
         if (this.loggedIn()) {

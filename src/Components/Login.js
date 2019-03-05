@@ -1,6 +1,7 @@
 import React from 'react'
 import {Form, Button, Alert} from 'react-bootstrap'
 import AuthService from './AuthService';
+import { openDb } from 'idb';
 
 class Login extends React.Component {
 
@@ -31,6 +32,7 @@ class Login extends React.Component {
 
     handleSubmit(event) {
 
+        console.log('hejhej');
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -43,7 +45,7 @@ class Login extends React.Component {
                 "username": this.state.login_id,
                 "password": this.state.password
             })
-        )
+            )
 
         // Fetch JWT token.
         fetch('http://localhost:3000/login', {
@@ -56,18 +58,19 @@ class Login extends React.Component {
                 'Content-Type': 'application/json'
             }
         })
-            .then(res => {
-                if (res.status === 200) {
-                    this.props.history.push('/');
-                } else {
-                    const error = new Error(res.error);
-                    throw error;
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                alert('Error logging in please try again');
-            });
+        .then(res => {
+            if (res.status === 200) {
+                this.props.history.push('/');
+                console.log('här');
+            } else {
+                const error = new Error(res.error);
+                throw error;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Error logging in please try again');
+        });
     }
 
     handleClick() {
@@ -76,13 +79,29 @@ class Login extends React.Component {
 
         // Fetch JWT token.
         this.Auth.login(this.state.login_id, this.state.password)
-            .then(res =>{
-                this.props.history.replace('/');
-            })
-            .catch(err =>{
-                console.log(err);
-                this.setState({loginMessage: 'Could not log you in. Make sure you enter a correct username and password.'})
-            })
+        .then(res =>{
+            this.props.history.replace('/');
+
+        this.Auth.fetch('http://localhost:3000/patient')
+        .then(
+            (result) => {
+              openDb('amedic', 1, function(upgradeDB) {
+                var store = upgradeDB.createObjectStore('patient', {
+                  keyPath: 'nationalID'
+              });
+                for(var i = 0; i < result.length; i++) {
+                  store.put({nationalID: result[i].nationalID, name: result[i].name, mobileNo: result[i].mobileNo, sex: result[i].sex, village: result[i].village, dateOfBirth: result[i].dateOfBirth});
+              }
+              var store = upgradeDB.createObjectStore('symptoms_sheet', {
+                  keyPath: 'ID'
+              });
+          })
+          });
+        })
+        .catch(err =>{
+            console.log(err);
+            this.setState({loginMessage: 'Could not log you in. Make sure you enter a correct username and password.'})
+        })
 
     }
 
@@ -91,48 +110,48 @@ class Login extends React.Component {
         const { validated } = this.state;
         return (
             <div class="container">
-                <h1>Log in</h1>
-                <Form
-                    noValidate
-                    validated={validated}
-                    onSubmit={e => this.handleSubmit(e)}
-                >
-                    <Form.Label>Login ID</Form.Label>
-                    <Form.Control
-                        required
-                        name="login_id"
-                        onChange={this.handleChange}
-                        value={this.state.login_id}
-                        type="text"
-                        placeholder="Enter login ID"
-                    />
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        required
-                        name="password"
-                        onChange={this.handleChange}
-                        value={this.state.password}
-                        type="password"
-                        placeholder="Enter password"
-                    />
-                    <br />
-                    <Button variant="primary" onClick={this.handleClick}>
-                        Login
-                    </Button>
+            <h1>Log in</h1>
+            <Form
+            noValidate
+            validated={validated}
+            onSubmit={e => this.handleSubmit(e)}
+            >
+            <Form.Label>Login ID</Form.Label>
+            <Form.Control
+            required
+            name="login_id"
+            onChange={this.handleChange}
+            value={this.state.login_id}
+            type="text"
+            placeholder="Enter login ID"
+            />
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+            required
+            name="password"
+            onChange={this.handleChange}
+            value={this.state.password}
+            type="password"
+            placeholder="Enter password"
+            />
+            <br />
+            <Button variant="primary" onClick={this.handleClick}>
+            Login
+            </Button>
 
-                </Form>
+            </Form>
 
-                <br />
-                {this.state.loginMessage != undefined ?
-                    <Alert dismissible variant="danger">
-                        <Alert.Heading>Error</Alert.Heading>
-                        <p>{this.state.loginMessage}</p>
-                    </Alert> : ''}
+            <br />
+            {this.state.loginMessage != undefined ?
+                <Alert dismissible variant="danger">
+                <Alert.Heading>Error</Alert.Heading>
+                <p>{this.state.loginMessage}</p>
+                </Alert> : ''}
 
-            </div>
-        )
-    }
+                </div>
+                )
+            }
 
-}
+        }
 
-export default Login
+        export default Login
