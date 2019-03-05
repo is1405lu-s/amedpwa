@@ -11,21 +11,21 @@ class ScreeningForm extends React.Component {
             // Ask and Look assessment properties:
             description: '',                    // VARCHAR
             cough: '',                          // BOOL
-            coughDays: '',                      // INT
+            coughDays: 0,                      // INT, default vaule
             diarrhoea: '',                      // BOOL
-            diarrhoeaDays: '',                  // INT
+            diarrhoeaDays: 0,                  // INT, default vaule
             bloodInStool: '',                   // VARCHAR
             fever: '',                          // INT
-            feverDays: '',                      // INT
+            feverDays: 0,                      // INT, default value
             convulsions: '',                    // VARCHAR
             difficultToEatDrink: '',            // BOOL
             cannotEatDrink: '',                 // BOOL
             vomiting: '',                       // BOOL
             vomitsEverything: '',               // BOOL
             redEyes: '',                        // BOOL
-            redEyesDays: '',                    // INT
+            redEyesDays: 0,                    // INT, default value
             difficultiesToSee: '',              // BOOL
-            difficultiesToSeeDays: '',          // INT
+            difficultiesToSeeDays: 0,          // INT, default value
             chestIndraw: '',                    // VARCHAR
             breathingFreq: '',                  // INT
             sleepy: '',                         // VARCHAR
@@ -53,11 +53,6 @@ class ScreeningForm extends React.Component {
 
     handleSubmit(event) {
         // TODO: Implement validation here.
-        if(this.state.coughDays === '') { this.setState({coughDays: 0}) }
-        if(this.state.diarrhoeaDays === '') { this.setState({diarrhoeaDays: 0}) }
-        if(this.state.feverDays === '') { this.setState({feverDays: 0}) }
-        if(this.state.redEyesDays === '') { this.setState({redEyesDays: 0}) }
-        if(this.state.difficultiesToSeeDays === '') { this.setState({difficultiesToSeeDays: 0}) }
 
         console.log(this.state)
         this.setState({submittedForm: true})
