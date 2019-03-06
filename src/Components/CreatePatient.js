@@ -15,11 +15,11 @@ class CreatePatient extends React.Component {
         super()
         this.state = {
             name: '',                   // VARCHAR
-            nationalID: '',             // INT
-            mobileNo: '',               // INT
+            national_id: '',             // INT
+            mobile_no: '',               // INT
             sex: '',                    // VARCHAR
-            villageName: '',            // VARCHAR
-            dateOfBirth: new Date(),     // DATE
+            village: '',            // VARCHAR
+            date_of_birth: new Date(),     // DATE
 
             createdPatient: false, 
             isLoading: false
@@ -43,7 +43,7 @@ class CreatePatient extends React.Component {
 
     handleDateChange(date) {
         this.setState({
-            dateOfBirth: date
+            date_of_birth: date
         })
     }
 
@@ -51,10 +51,10 @@ class CreatePatient extends React.Component {
         this.setState(
         {
                 name: '',           // VARCHAR
-                mobileNo: '',       // INT
+                mobile_no: '',       // INT
                 sex: '',            // VARCHAR
-                villageName: '',    // VARCHAR
-                dateOfBirth: '',     // DATE
+                village: '',    // VARCHAR
+                date_of_birth: '',     // DATE
             }
             )
     }
@@ -62,15 +62,15 @@ class CreatePatient extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        var nID = parseInt(this.props.nationalID);
-        var mNo = parseInt(this.state.mobileNo)
+        var nID = parseInt(this.props.national_id);
+        var mNo = parseInt(this.state.mobile_no)
         var patient = {
             name: this.state.name,                   // VARCHAR
-            nationalID: nID,             // INT
-            mobileNo: mNo,               // INT
+            national_id: nID,             // INT
+            mobile_no: mNo,               // INT
             sex: this.state.sex,                    // VARCHAR
-            villageName: this.state.villageName,            // VARCHAR
-            dateOfBirth: this.state.dateOfBirth,
+            village: this.state.village,            // VARCHAR
+            date_of_birth: this.state.date_of_birth,
         }
 
         this.setState({
@@ -95,12 +95,12 @@ class CreatePatient extends React.Component {
             const openRequest = openDb("amedic", 1);
             openRequest.then(db => {
                 db.transaction("patient", "readwrite").objectStore("patient").put({
-                    nationalID: patient.nationalID, 
+                    national_id: patient.national_id,
                     name: patient.name, 
-                    mobileNo: patient.mobileNo, 
+                    mobile_no: patient.mobile_no,
                     sex: patient.sex, 
                     village: patient.village, 
-                    dateOfBirth: patient.dateOfBirth
+                    date_of_birth: patient.date_of_birth
                 });
             })
             this.setState({
@@ -121,7 +121,7 @@ class CreatePatient extends React.Component {
         return (
         <div style={this.props.createPatient ? {display: ''} : {display: 'none'}}>
         <br />
-        <p>Could not find patient with the id {this.props.nationalID}.</p>
+        <p>Could not find patient with the id {this.props.national_id}.</p>
         <h3>Create the patient?</h3>
 
         <Form onSubmit={this.handleSubmit}>
@@ -130,11 +130,11 @@ class CreatePatient extends React.Component {
         <Form.Label>Study ID</Form.Label>
         <Form.Control 
         readOnly 
-        name="nationalID" 
-        value={this.props.nationalID}
+        name="national_id"
+        value={this.props.national_id}
         onChange={this.handleChange} 
         type="text" 
-        placeholder={this.props.nationalID} 
+        placeholder={this.props.national_id}
         />
         </Form.Group>
 
@@ -158,9 +158,9 @@ class CreatePatient extends React.Component {
         <Form.Label>Enter patient mobile number</Form.Label>
         <Form.Control
         required
-        name="mobileNo"
+        name="mobile_no"
         onChange={this.handleChange}
-        value={this.state.mobileNo}
+        value={this.state.mobile_no}
         type="number"
         placeholder="Patient mobile number"
         /> 
@@ -197,9 +197,9 @@ class CreatePatient extends React.Component {
         <Form.Label>Enter patient village name</Form.Label>
         <Form.Control
         required
-        name="villageName"
+        name="village"
         onChange={this.handleChange}
-        value={this.state.villageName}
+        value={this.state.village}
         type="text"
         placeholder="Patient village name"
         /> 
@@ -211,9 +211,9 @@ class CreatePatient extends React.Component {
         <Form.Label>Enter patient date of birth</Form.Label>
         <br></br>
         <DatePicker
-        selected={this.state.dateOfBirth}
+        selected={this.state.date_of_birth}
         onChange={this.handleDateChange}
-        name="dateOfBirth"
+        name="date_of_birth"
         type="date"
         placeholderText="MM-DD-YYYY"
         />
