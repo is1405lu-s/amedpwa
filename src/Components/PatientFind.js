@@ -130,7 +130,7 @@ class PatientFind extends React.Component {
 
     <CreatePatient 
     createPatient={this.state.createPatient}
-    nationalID={this.state.nationalID}
+    national_id={this.state.national_id}
     />
 
     </div>
