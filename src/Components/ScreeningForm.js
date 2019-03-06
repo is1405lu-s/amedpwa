@@ -1,7 +1,7 @@
 import React from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 class ScreeningForm extends React.Component {
 
@@ -11,21 +11,21 @@ class ScreeningForm extends React.Component {
             // Ask and Look assessment properties:
             description: '',                    // VARCHAR
             cough: '',                          // BOOL
-            coughDays: 0,                      // INT, default vaule
+            coughDays: '',                      // INT
             diarrhoea: '',                      // BOOL
-            diarrhoeaDays: 0,                  // INT, default vaule
+            diarrhoeaDays: '',                  // INT
             bloodInStool: '',                   // VARCHAR
             fever: '',                          // INT
-            feverDays: 0,                      // INT, default value
+            feverDays: '',                      // INT
             convulsions: '',                    // VARCHAR
             difficultToEatDrink: '',            // BOOL
             cannotEatDrink: '',                 // BOOL
             vomiting: '',                       // BOOL
             vomitsEverything: '',               // BOOL
             redEyes: '',                        // BOOL
-            redEyesDays: 0,                    // INT, default value
+            redEyesDays: '',                    // INT
             difficultiesToSee: '',              // BOOL
-            difficultiesToSeeDays: 0,          // INT, default value
+            difficultiesToSeeDays: '',          // INT
             chestIndraw: '',                    // VARCHAR
             breathingFreq: '',                  // INT
             sleepy: '',                         // VARCHAR
@@ -34,7 +34,10 @@ class ScreeningForm extends React.Component {
             muac: '',                           // VARCHAR
             swollenFeet: '',                    // VARCHAR
 
-            submittedForm: false
+            submittedForm: false,
+            validated: false,
+            validity: false,
+            patient: {}
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -49,32 +52,76 @@ class ScreeningForm extends React.Component {
         this.setState({
             [name]: value
         })
+
+        this.setState({validity: false})
     }
 
     handleSubmit(event) {
         // TODO: Implement validation here.
+        if(!this.state.cough) { this.setState({coughDays: 0}) }
+        if(!this.state.diarrhoea) { this.setState({diarrhoeaDays: 0}) }
+        //if(this.state.feverDays === '') { this.setState({feverDays: 0}) }
+        if(!this.state.redEyes) { this.setState({redEyesDays: 0}) }
+        if(!this.state.difficultiesToSee) { this.setState({difficultiesToSeeDays: 0}) }
+
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        this.setState({ validated: true })
+        this.setState({ validity: form.checkValidity() })
 
         console.log(this.state)
-        this.setState({submittedForm: true})
-        // event.preventDefault();
+        //this.setState({submittedForm: true})
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    componentDidMount() {
+
+        if(this.props.location.state != undefined) {
+            this.setState(this.props.location.state.alafForm)
+        }
+        if(this.props.location.state != undefined) {
+            this.setState({patient: this.props.location.state.patient})
+        }
     }
 
     render() {
+
+        var continueButton
+        if(this.state.validity){
+            continueButton =    <Link to={{
+                pathname: '/alaf/review',
+                patient: this.state.patient,
+                alafForm: this.state
+            }}>
+                <Button className="float-right" variant="success">
+                    Continue
+                </Button>
+            </Link>
+        } else {
+            continueButton = <Button className="float-right" variant="primary" type="submit">
+                Validate
+            </Button>
+        }
+
         return (
             <div class="container">
                 <h1>Ask and look assessment form</h1>
-                <Form onSubmit={this.handleSubmit}>
+                <Form noValidate validated={this.state.validated} onSubmit={e => this.handleSubmit(e)}>
 
                     <Form.Group controlId="formStudyID">
                         <Form.Label>Patient name</Form.Label>
                         <Form.Control
                             readOnly
                             name="patient"
-                            value={typeof(this.props.location.patient) === 'undefined' ? 'No patient found.' : this.props.location.patient.name}
+                            value={typeof(this.state.patient) === 'undefined' ? 'No patient found.' : this.state.patient.name}
                             onChange={this.handleChange}
                             type="text"
-                            placeholder={typeof(this.props.location.patient) === 'undefined' ?
-                                'No patient found.' : this.props.location.patient.name}
+                            placeholder={typeof(this.state.patient) === 'undefined' ?
+                                'No patient found.' : this.state.patient.name}
                         />
                     </Form.Group>
 
@@ -93,7 +140,7 @@ class ScreeningForm extends React.Component {
                     <Form.Group controlId="formCoughing">
                         <Form.Check
                             name="cough"
-                            defaultChecked={this.state.cough}
+                            checked={this.state.cough}
                             onChange={this.handleChange}
                             type="checkbox"
                             label="Tick the box if the patient is coughing."
@@ -115,7 +162,7 @@ class ScreeningForm extends React.Component {
                     <Form.Group controlId="formDiarrhoea">
                         <Form.Check
                             name="diarrhoea"
-                            defaultChecked={this.state.diarrhoea}
+                            checked={this.state.diarrhoea}
                             onChange={this.handleChange}
                             type="checkbox"
                             label="Tick the box if the patient is experiencing diarrhoea."
@@ -184,7 +231,7 @@ class ScreeningForm extends React.Component {
 
                     <Form.Check
                         name="difficultToEatDrink"
-                        defaultChecked={this.state.difficultToEatDrink}
+                        checked={this.state.difficultToEatDrink}
                         onChange={this.handleChange}
                         type="checkbox"
                         label="Tick the box if the patient have difficulties eating and/or drinking."
@@ -194,7 +241,7 @@ class ScreeningForm extends React.Component {
 
                     <Form.Check
                         name="cannotEatDrink"
-                        defaultChecked={this.state.cannotEatDrink}
+                        checked={this.state.cannotEatDrink}
                         onChange={this.handleChange}
                         type="checkbox"
                         label="Tick the box if the patient can not eat and/or drink at all."
@@ -204,7 +251,7 @@ class ScreeningForm extends React.Component {
 
                     <Form.Check
                         name="vomiting"
-                        defaultChecked={this.state.vomiting}
+                        checked={this.state.vomiting}
                         onChange={this.handleChange}
                         type="checkbox"
                         label="Tick the box if the patient is experiencing vomiting."
@@ -214,7 +261,7 @@ class ScreeningForm extends React.Component {
 
                     <Form.Check
                         name="vomitsEverything"
-                        defaultChecked={this.state.vomitsEverything}
+                        checked={this.state.vomitsEverything}
                         onChange={this.handleChange}
                         type="checkbox"
                         label="Tick the box if the patient vomits everything."
@@ -224,7 +271,7 @@ class ScreeningForm extends React.Component {
 
                     <Form.Check
                         name="redEyes"
-                        defaultChecked={this.state.redEyes}
+                        checked={this.state.redEyes}
                         onChange={this.handleChange}
                         type="checkbox"
                         label="Tick the box if the patient has red eyes."
@@ -247,7 +294,7 @@ class ScreeningForm extends React.Component {
 
                     <Form.Check
                         name="difficultiesToSee"
-                        defaultChecked={this.state.difficultiesToSee}
+                        checked={this.state.difficultiesToSee}
                         onChange={this.handleChange}
                         type="checkbox"
                         label="Tick the box if the patient has difficulties seeing."
@@ -284,7 +331,7 @@ class ScreeningForm extends React.Component {
                     <Form.Group controlId="formBreathingFreq">
                         <Form.Label>What is the patient breathing frequency?</Form.Label>
                         <Form.Control
-                            required={this.state.breathingFreq}
+                            required
                             name="breathingFreq"
                             onChange={this.handleChange}
                             value={this.state.breathingFreq}
@@ -347,17 +394,30 @@ class ScreeningForm extends React.Component {
                             placeholder="Enter a description."
                         />
                     </Form.Group>
-                    <Button className="float-right" variant="primary" type="submit">
-                        Continue
-                    </Button>
+                    <Link to={{ pathname:`/patient/${this.state.patient.national_id}` }}>
+                        <Button className="float-left" variant="secondary" type="submit">
+                            Back to patient
+                        </Button>
+                    </Link>
+                    {/*
+                    <Link to={{
+                        pathname: '/alaf/review',
+                        patient: this.state.patient,
+                        alafForm: this.state
+                    }}>
+*/}
+                    {continueButton}
+                    {/*</Link>*/}
                 </Form>
                 {
+                    /*
                     this.state.submittedForm === false ? '' : <Redirect to={{
-                        pathname: '/alaf/review',
-                        patient: this.props.location.patient,
-                        alafForm: this.state
+                    pathname: '/alaf/review',
+                    patient: this.state.patient,
+                    alafForm: this.state
                     }}
                     />
+                    */
                 }
             </div>
         )

@@ -6,7 +6,6 @@ import PatientFind from '../Components/PatientFind'
 import reviewForm from '../Components/reviewForm'
 import ViewPatient from '../Components/ViewPatient'
 import ViewVisit from '../Components/ViewVisit'
-import DiagnoseComponent from '../Components/DiagnoseComponent'
 
 import { Route, Switch, Redirect } from 'react-router-dom'
 import Login from '../Components/Login'
@@ -22,7 +21,7 @@ export const Routes = () => {
             />
 
             <Header />
-            
+
             <Switch>
                 <Route exact path="/home" component={ScreeningForm} />
                 <Route exact path="/login" component={Login} />
@@ -33,9 +32,9 @@ export const Routes = () => {
                 </Route>
                 <Route exact path="/patient" component={PatientFind} />
                 <Route path="/patient/:id" component={ViewPatient} />
-                <Route path="/hsavisit/:patientID/:diagnosisID/:hsaID/:symptomID" component={ViewVisit} />
+                <Route path="/visit/:id" component={ViewVisit} />
                 <Route path="/hevisit/:patientID/:diagnosisID/:heID" component={ViewVisit} />
-                <Route path="/diagnosis" component={DiagnoseComponent} />
+
             </Switch>
         </div>
     )

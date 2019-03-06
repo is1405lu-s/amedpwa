@@ -45,33 +45,33 @@ class SymptomComponent extends React.Component {
                  aria-controls={this.state.name}
                  aria-expanded={isOpen}>
                 <Alert variant={'secondary'}>
-                    <Alert.Heading>{`ID: ${symptomsSheet.ID}`}</Alert.Heading>
+                    <Alert.Heading>{`Sheet ID: ${symptomsSheet.ID}`}</Alert.Heading>
                     <Collapse in={this.state.isOpen}>
                         <div id={this.state.name}>
                             <p><b>Description: </b>{symptomsSheet.description}</p>
-                            <p><b>Is the patient coughing? </b>{symptomsSheet.cough}</p>
-                            <p><b>For how many days has the patient been coughing? </b>{symptomsSheet.coughdays}</p>
-                            <p><b>Does the patient have diarrhoea? </b>{symptomsSheet.diarrhoea}</p>
-                            <p><b>How many days has the patient had diarrhoea? </b>{symptomsSheet.diarrhoeaDays}</p>
-                            <p><b>Does the patient have blood in stool? </b>{symptomsSheet.bloodInStool}</p>
+                            <p><b>Is the patient coughing? </b>{symptomsSheet.cough ? 'Yes.' : 'No.'}</p>
+                            <p><b>How many days has the patient been coughing? </b>{symptomsSheet.cough_days} days.</p>
+                            <p><b>Does the patient have diarrhoea? </b>{symptomsSheet.diarrhoea ? 'Yes.' : 'No.'}</p>
+                            <p><b>How many days has the patient had diarrhoea? </b>{symptomsSheet.diarrhoea_days} days.</p>
+                            <p><b>Does the patient have blood in stool? </b>{symptomsSheet.blood_in_stool}</p>
                             <p><b>What body temperature does the patient have? </b>{symptomsSheet.fever}</p>
-                            <p><b>If the patient has fever, how many days has the patient had a fever? </b>{symptomsSheet.feverDays}</p>
+                            <p><b>How many days has the patient had a fever? </b>{symptomsSheet.fever_days} days.</p>
                             <p><b>Does the patient have convulsions? </b>{symptomsSheet.convulsions}</p>
-                            <p><b>Does the patient have difficulties eating or drinking? </b>{symptomsSheet.difficultToEatDrink}</p>
-                            <p><b>Is the patient unable to eat and/or drink? </b>{symptomsSheet.cannotEatDrink}</p>
-                            <p><b>Does the patient vomit? </b>{symptomsSheet.vomiting}</p>
-                            <p><b>Does the patient vomit everything? </b>{symptomsSheet.vomitsEverything}</p>
-                            <p><b>Does the patient have red eyes? </b>{symptomsSheet.redEyes}</p>
-                            <p><b>If the patient has red eyes, how many days has the patient had red eyes for? </b>{symptomsSheet.redEyesDays}</p>
-                            <p><b>Does the patient have difficulties to see? </b>{symptomsSheet.difficultiesToSee}</p>
-                            <p><b>If the patient has difficulties seeing, how many days has the patient had difficulties seeing? </b>{symptomsSheet.difficultiesToSeeDays}</p>
-                            <p><b>Is the patient's chest indrawn? </b>{symptomsSheet.chestIndraw}</p>
-                            <p><b>What is the patient breathing frequency? </b>{symptomsSheet.breathingFreq}</p>
+                            <p><b>Does the patient have difficulties eating or drinking? </b>{symptomsSheet.difficult_to_eat_drink ? 'Yes.' : 'No.'}</p>
+                            <p><b>Is the patient unable to eat and/or drink? </b>{symptomsSheet.cannot_eat_drink ? 'Yes.' : 'No.'}</p>
+                            <p><b>Does the patient vomit? </b>{symptomsSheet.vomiting ? 'Yes.' : 'No.'}</p>
+                            <p><b>Does the patient vomit everything? </b>{symptomsSheet.vomits_everything ? 'Yes.' : 'No.'}</p>
+                            <p><b>Does the patient have red eyes? </b>{symptomsSheet.red_eyes ? 'Yes.' : 'No.'}</p>
+                            <p><b>If the patient has red eyes, how many days has the patient had red eyes for? </b>{symptomsSheet.red_eyes_days} days.</p>
+                            <p><b>Does the patient have difficulties to see? </b>{symptomsSheet.difficulties_to_see ? 'Yes.' : 'No.'}</p>
+                            <p><b>How many days has the patient had difficulties seeing? </b>{symptomsSheet.difficulties_to_see_days} days.</p>
+                            <p><b>Is the patient's chest indrawn? </b>{symptomsSheet.chest_indraw}</p>
+                            <p><b>What is the patient breathing frequency? </b>{symptomsSheet.breathing_freq}</p>
                             <p><b>Is the patient sleepy? </b>{symptomsSheet.sleepy}</p>
                             <p><b>Is the patient unconscious? </b>{symptomsSheet.unconscious}</p>
-                            <p><b>Does the patient have Palmar Pallor? </b>{symptomsSheet.palmarPalor}</p>
+                            <p><b>Does the patient have Palmar Pallor? </b>{symptomsSheet.palmar_palor}</p>
                             <p><b>What is the patient middle upper arm circumference? </b>{symptomsSheet.muac}</p>
-                            <p><b>Does the patient have swollen feet? </b>{symptomsSheet.swollenFeet}</p>
+                            <p><b>Does the patient have swollen feet? </b>{symptomsSheet.swollen_feet}</p>
                         </div>
                     </Collapse>
                 </Alert>

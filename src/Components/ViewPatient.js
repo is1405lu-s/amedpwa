@@ -1,197 +1,238 @@
 import React from 'react'
-import {Container, Table, Button} from 'react-bootstrap'
+import { Container, Alert, Button, Collapse } from 'react-bootstrap'
+import DiagnoseComponent from './DiagnoseComponent'
+import TreatmentComponent from './TreatmentComponent'
+import SymptomComponent from './SymptomComponent'
+import AuthService from './AuthService'
+import { Redirect } from 'react-router-dom'
 import {Link} from 'react-router-dom'
 
-import HSAVisitTD from './HSAVisitTD'
-import HEVisitTD from './HEVisitTD'
-import ScreeningForm from './ScreeningForm'
-import { Redirect } from 'react-router-dom'
-
-import AuthService from './AuthService';
-
-class ViewPatient extends React.Component {
+class ViewVisit extends React.Component {
     constructor(props) {
         super()
         this.state = {
-            patient: {},
-            caregivers: null,
-            village: {},
-            HSA_visits: null,
-            HE_visits: null
+            viewingHSAVisit: false,
+            viewingHEVisit: false,
+            visit: {},
+            diagnoses: [],
+            treatments: [],
+            symptoms: null,
+            patient_id: null,
+            patient: null
+
         }
-
-        this.printOutCaregivers = this.printOutCaregivers.bind(this)
-        this.printOutHSAVisits = this.printOutHSAVisits.bind(this)
+        this.printOutDiagnoses = this.printOutDiagnoses.bind(this)
+        this.printOutTreatments = this.printOutTreatments.bind(this)
         this.Auth = new AuthService()
-
     }
 
-    // TODO: Make sure this method loops properly and prints out also if there is multiple caregivers:
-    printOutCaregivers() {
-        if(this.state.caregivers != null){
-            return this.state.caregivers.map(function(caregiver){
-                return (
-                    <div key={caregiver.ID}>
-                        <p><b>Caregiver name: </b>{caregiver.name}</p>
-                        <p><b>Caregiver relation to patient: </b>{caregiver.relationToPatient}</p>
+    printOutDiagnoses() {
+
+        if(this.state.diagnoses === null || this.state.diagnoses.length < 1) {
+            return (<p>Could not find any diagnoses.</p>)
+        }
+
+        // Loop through array, printing out each visit.
+        if(this.state.diagnoses != null) {
+            return this.state.diagnoses.map(function(diagnosis) {
+                return(
+                    <div key={diagnosis.ID}>
+                        <DiagnoseComponent diagnosis={diagnosis} />
                     </div>
                 )
             })
         }
     }
 
-    printOutHSAVisits() {
+    printOutTreatments() {
+
+        if(this.state.treatments.length < 1) {
+            return (<p>Could not find any treatments.</p>)
+        }
 
         // Loop through array, printing out each visit.
-        if(this.state.HSA_visits != null) {
-            return this.state.HSA_visits.map(function(visit) {
+        if(this.state.treatments != null) {
+            return this.state.treatments.map(function(treatment) {
                 return(
-                    <HSAVisitTD visit={visit} key={visit.patientID + visit.diagnosisID + visit.HSAID + visit.symptomID} />
+                    <div key={treatment.ID}>
+                        <TreatmentComponent treatment={treatment} />
+                    </div>
                 )
             })
         }
     }
 
-    printOutHEVisits() {
 
-        // Loop through array, printing out each visit.
-        if(this.state.HE_visits != null) {
-            return this.state.HE_visits.map(function(visit) {
-                return(
-                    <HEVisitTD visit={visit} key={visit.patientID + visit.diagnosisID + visit.expertID} />
+    fetchTreatments(diagnosis_id) {
+        // Fetch treatmentdiagnosis
+        if(this.state.visit != null) {
+            fetch(`http://localhost:3000/treatmentdiagnosis/${diagnosis_id}`)
+                .then(res => res.json())
+                .then(
+                    (fetchedTreatmentDiagnosis) => {
+
+                        // Fetch treatments
+                        fetchedTreatmentDiagnosis.map((treatmentdiagnosis) => {
+                            // Should push each treatment into the state treatment array.
+                            fetch(`http://localhost:3000/treatment/${treatmentdiagnosis.treatment_id}`).then(res => res.json())
+                                .then(
+                                    (fetchedTreatments) => {
+                                        // Change this to push each treatment into the array instead of replacing it:
+                                        this.setState({
+                                            treatments: fetchedTreatments
+                                        })
+                                    },
+                                    (error) => {
+                                        this.setState({
+                                            error
+                                        })
+                                    }
+                                )
+                        })
+
+                    },
+                    (error) => {
+                        this.setState({
+                            error
+                        })
+                    }
                 )
-            })
         }
     }
 
-    componentDidMount(){
+    fetchDiagnoses(diagnosis_id) {
+        if(this.state.visit != null) {
+            // Fetch diagnosis
+            fetch(`http://localhost:3000/diagnosis/${diagnosis_id}`)
+                .then(res => res.json())
+                .then(
+                    (fetchedDiagnoses) => {
+                        this.setState({
+                            diagnoses: fetchedDiagnoses
+                        })
+                    },
+                    (error) => {
+                        this.setState({
+                            error
+                        })
+                    }
+                )
+        }
 
-        // Fetch patient object.
-        this.Auth.fetch(`http://localhost:3000/patient/${this.props.match.params.id}`)
-            .then(
-                (fetchedPatient) => {
-                    console.log(fetchedPatient)
-                    this.setState({
-                        patient: fetchedPatient
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        error
-                    })
-                })
+    }
 
-        // Fetch patient caregiver object.
-        this.Auth.fetch(`http://localhost:3000/caregiver/${this.props.match.params.id}`)
-            .then(
-                (fetchedCaregiver) => {
-                    this.setState({
-                        caregivers: fetchedCaregiver
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        error
-                    })
-                })
-
-        // Fetch patient hsa visits array.
-        this.Auth.fetch(`http://localhost:3000/hsavisit/${this.props.match.params.id}`)
-            .then(
-                (fetchedHSAVisits) => {
-                    this.setState({
-                        HSA_visits: fetchedHSAVisits
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        error
-                    })
-                })
-
-        // Fetch patient he visits array.
-        this.Auth.fetch(`http://localhost:3000/hevisit/${this.props.match.params.id}`)
-            .then(
-                (fetchedHEVisits) => {
-                    this.setState({
-                        HE_visits: fetchedHEVisits
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        error
-                    })
-                })
+    fetchSymptoms(symptoms_sheet_id) {
+        if(this.state.visit != null) {
+            // Fetch symptom sheet
+            fetch(`http://localhost:3000/symptoms/${symptoms_sheet_id}`).then(res => res.json())
+                .then(
+                    (fetchedSymptoms) => {
+                        this.setState({
+                            symptoms: fetchedSymptoms
+                        })
+                    },
+                    (error) => {
+                        this.setState({
+                            error
+                        })
+                    }
+                )
+        }
 
     }
 
     render() {
+
         return (
             <Container>
                 {
                     this.Auth.loggedIn() ? '' : <Redirect to='/login' />
                 }
 
-                <h2>Patient details</h2>
-                <p><b>Name: </b>{this.state.patient.name}</p>
-                <p><b>Date of birth: </b>{this.state.patient.dateOfBirth}</p>
-                <p><b>Mobile No: </b>{this.state.patient.mobileNo}</p>
-                <p><b>National ID: </b>{this.state.patient.nationalID}</p>
-                <p><b>Sex: </b>{this.state.patient.sex}</p>
-                <p><b>Village: </b>{this.state.patient.villageName}</p>
+                <h1>View visit {this.props.match.params.id}</h1>
 
-                <div>
-                    {
-                        // Check if patient has a caregiver, if so, print out caregiver, else don't.
-                        this.printOutCaregivers()
-                    }
-                </div>
+                <h3>Diagnoses</h3>
 
+                {
+                    // For each diagnose found in the array, render a diagnose component:
+                    this.printOutDiagnoses()
+                }
+
+                <h3>Treatments</h3>
+
+                {
+                    // For each diagnose found in the array, render a treatment component:
+                    this.printOutTreatments()
+                }
+
+
+                {
+                    this.state.symptoms != null ?
+                        <div><h3>Symptoms Sheet</h3><SymptomComponent symptomsSheet={this.state.symptoms} /></div> : ''
+                }
 
                 <div class="text-center">
-                    <Link to={{ pathname:'/alaf/', state: { patient: this.state.patient } }}><Button variant="primary">Fill out symptoms sheet</Button></Link>
+                    { this.state.patient != null ?
+                        <Link to={{ pathname:`/patient/${this.state.patient.national_id}` }}>
+                            <Button variant="primary">Go to patient page</Button>
+                        </Link> : ''
+                    }
+
                     <br /><br />
                 </div>
-
-                <h2>HSA visits</h2>
-                <Table>
-
-                    <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Diagnosis?</th>
-                        <th>Treatment?</th>
-                    </tr>
-                    </thead>
-
-                    {
-                        // Check if patient has HSA visits, if so, print out visits, else don't.
-                        this.printOutHSAVisits()
-                    }
-
-                </Table>
-
-                <h2>HE visits</h2>
-                <Table>
-
-                    <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Diagnosis?</th>
-                        <th>Treatment?</th>
-                    </tr>
-                    </thead>
-
-                    {
-                        // Check if patient has HE visits, if so, print out visits, else don't.
-                        this.printOutHEVisits()
-                    }
-
-                </Table>
 
             </Container>
         )
     }
+
+    componentWillMount() {
+
+    }
+
+    componentDidMount(){
+
+        this.Auth.fetch(`http://localhost:3000/visit/${this.props.match.params.id}`)
+            .then(
+                (fetchedVisit) => {
+
+                    this.setState({
+                        visit: fetchedVisit[0]
+                    })
+
+                    this.fetchTreatments(fetchedVisit[0].diagnosis_id)
+                    this.fetchDiagnoses(fetchedVisit[0].diagnosis_id)
+                    this.fetchSymptoms(fetchedVisit[0].symptoms_sheet_id)
+
+                    this.setState({
+                        patient_id: fetchedVisit[0].patient_id
+                    })
+
+                    this.Auth.fetch(`http://localhost:3000/patient/${fetchedVisit[0].patient_id}`)
+                        .then(
+                            (fetchedPatient) => {
+                                this.setState({
+                                    patient: fetchedPatient
+                                })
+
+                            },
+                            (error) => {
+                                this.setState({
+                                    error
+                                })
+                            })
+
+                },
+                (error) => {
+                    console.log(error)
+                    this.setState({
+                        error
+                    })
+
+                }
+            )
+
+    }
+
 }
 
-export default ViewPatient
+export default ViewVisit
