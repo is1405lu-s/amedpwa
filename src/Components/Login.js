@@ -82,21 +82,28 @@ class Login extends React.Component {
         .then(res =>{
             this.props.history.replace('/');
 
-        this.Auth.fetch('http://localhost:3000/patient')
-        .then(
-            (result) => {
-              openDb('amedic', 1, function(upgradeDB) {
-                var store = upgradeDB.createObjectStore('patient', {
-                  keyPath: 'national_id'
+            this.Auth.fetch('http://localhost:3000/patient')
+            .then(
+                (result) => {
+                  openDb('amedic', 1, function(upgradeDB) {
+                    var store = upgradeDB.createObjectStore('patient', {
+                      keyPath: 'national_id'
+                  });
+                    for(var i = 0; i < result.length; i++) {
+                      store.put({national_id: result[i].national_id, name: result[i].name, mobile_no: result[i].mobile_no, sex: result[i].sex, village: result[i].village, date_of_birth: result[i].date_of_birth});
+                  }
+                  var store = upgradeDB.createObjectStore('symptoms_sheet', {
+                      keyPath: 'ID'
+                  });
+                  var store = upgradeDB.createObjectStore('diagnosis', {
+                      keyPath: 'ID'
+                  });
+                  var store = upgradeDB.createObjectStore('caregiver', {
+                      keyPath: 'national_id'
+                  });
+              })
               });
-                for(var i = 0; i < result.length; i++) {
-                  store.put({national_id: result[i].national_id, name: result[i].name, mobile_no: result[i].mobile_no, sex: result[i].sex, village: result[i].village, date_of_birth: result[i].date_of_birth});
-              }
-              var store = upgradeDB.createObjectStore('symptoms_sheet', {
-                  keyPath: 'ID'
-              });
-          })
-          });
+
         })
         .catch(err =>{
             console.log(err);
