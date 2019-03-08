@@ -12,7 +12,7 @@ class PatientFind extends React.Component {
   constructor(props) {
     super()
     this.state = {
-      nationalID: '',
+      national_id: '',
       createPatient: false,
       foundPatient: null, 
       isLoading: false
@@ -36,9 +36,9 @@ class PatientFind extends React.Component {
           isLoading: true
         });
 
-        console.log(this.state.nationalID);
+        console.log(this.state.national_id);
 
-        this.Auth.fetch(`http://localhost:3000/patient/nationalid/${this.state.nationalID}`, { signal })
+        this.Auth.fetch(`http://localhost:3000/patient/nationalid/${this.state.national_id}`, { signal })
         .then(
           (result) => {
             console.log(result)
@@ -49,7 +49,7 @@ class PatientFind extends React.Component {
           },
           (error) => {
             console.log('error, trying local DB');
-            var key = parseInt(this.state.nationalID);
+            var key = parseInt(this.state.national_id);
             const openRequest = openDb('amedic', 1);
             openRequest.then(db => {
               const tx = db.transaction('patient', 'readonly');
@@ -109,8 +109,8 @@ class PatientFind extends React.Component {
       <Form.Group controlId="formNationalID">
       <Form.Label>Find patient via National ID</Form.Label>
       <Form.Control 
-      name="nationalID"
-      value={this.state.nationalID}
+      name="national_id"
+      value={this.state.national_id}
       onChange={this.handleStudyIDChange} 
       type="number"
       placeholder="Enter national ID"
@@ -122,7 +122,7 @@ class PatientFind extends React.Component {
 
       {
        this.state.foundPatient === null ? '' : <Redirect to={{
-        pathname: `/patient/${this.state.nationalID}`, 
+        pathname: `/patient/${this.state.national_id}`,
         patient: this.state.foundPatient
       }}
       />
@@ -130,7 +130,7 @@ class PatientFind extends React.Component {
 
     <CreatePatient 
     createPatient={this.state.createPatient}
-    national_id={this.state.nationalID}
+    national_id={this.state.national_id}
     />
 
     </div>

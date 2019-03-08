@@ -11,6 +11,7 @@ if (workbox) {
 const precacheResources = [
 '/',
 'Components/Login.js',
+'Components/CreateCaregiver.js',
 'Components/AuthService.js',
 'Components/withAuth.js',
 'Components/CreatePatient.js',

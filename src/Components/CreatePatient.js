@@ -2,7 +2,10 @@ import React from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
+import CreateCaregiver from './CreateCaregiver'
+import AuthService from './AuthService';
+import {Link, Redirect} from 'react-router-dom'
 
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,17 +23,25 @@ class CreatePatient extends React.Component {
             national_id: '',             // INT
             mobile_no: '',               // INT
             sex: '',                    // VARCHAR
-            village: '',            // VARCHAR
+            village_name: '',            // VARCHAR
             date_of_birth: new Date(),     // DATE
+            caregivercounter: 1,
 
+            minor: false,
             createdPatient: false, 
             isLoading: false,
         }
+        this.Auth = new AuthService();
 
         this.handleChange = this.handleChange.bind(this)
         this.resetState = this.resetState.bind(this)
         this.handleDateChange = this.handleDateChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.increaseCaregiverCounter = this.increaseCaregiverCounter.bind(this)
+        this.decreaseCaregiverCounter = this.decreaseCaregiverCounter.bind(this)
+        this.checkBirthdate = this.checkBirthdate.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.componentDidMount = this.componentDidMount.bind(this)
     }
 
     handleChange(event) {
@@ -47,6 +58,7 @@ class CreatePatient extends React.Component {
         this.setState({
             date_of_birth: date
         })
+        this.checkBirthdate(date)
     }
 
     resetState() {
@@ -55,12 +67,37 @@ class CreatePatient extends React.Component {
                 name: '',           // VARCHAR
                 mobile_no: '',       // INT
                 sex: '',            // VARCHAR
-                village: '',    // VARCHAR
+                village_name: '',    // VARCHAR
                 date_of_birth: '',     // DATE
+                national_id: '',
+                caregivercounter: 0,
+                redirect: false
             }
             )
     }
+    checkBirthdate(date) {
+        var today = new Date()
+        var dd = today.getDate()
+        var mm = today.getMonth() + 1; // Be careful! January is 0.
+        var yyyy = today.getFullYear()
 
+        if(yyyy - date.getFullYear()  < 18) {
+            this.setState({minor: true})
+        } else if (yyyy - date.getFullYear()  === 18) {
+            if(date.getMonth() + 1 <= mm ) {
+                if(date.getDate()  < dd ) {
+                    this.setState({minor: true})
+                } else {
+                    this.setState({minor: false})
+                }
+            } else if (date.getMonth() + 1 > mm) {
+                this.setState({minor: false})
+            }
+        } else {
+            this.setState({minor: false})
+        }
+
+    }
     handleSubmit(event) {
         event.preventDefault();
 
@@ -117,6 +154,53 @@ class CreatePatient extends React.Component {
                 isLoading: false});
         })
     }
+    componentDidMount() {
+
+    }
+
+    increaseCaregiverCounter() {
+        let caregivercounter = this.state.caregivercounter
+        caregivercounter += 1
+        this.setState({ caregivercounter: caregivercounter})
+    }
+
+    decreaseCaregiverCounter() {
+
+        let caregivercounter = this.state.caregivercounter
+        if(caregivercounter != 0) {
+            caregivercounter -= 1
+            this.setState({ caregivercounter: caregivercounter})
+        }
+
+    }
+
+    handleSubmit(event) {
+        // TODO: Implement validation here.
+        event.preventDefault()
+        //event.stopPropagation()
+
+        let patient = {
+            name:this.state.name,
+            national_id:this.props.national_id,
+            mobile_no:this.state.mobile_no,
+            sex:this.state.sex,
+            village_name:this.state.village_name,
+            date_of_birth:this.state.date_of_birth
+        }
+
+        this.Auth.fetch('http://localhost:3000/patient/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(patient)
+        }).then(response => {
+            this.setState({redirect: true})
+            //this.props.history.push(`/patient/${response.national_id}`);
+        })
+    }
+
 
     render() {
 
@@ -205,9 +289,9 @@ class CreatePatient extends React.Component {
         <Form.Label>Enter patient village name</Form.Label>
         <Form.Control
         required
-        name="village"
+        name="village_name"
         onChange={this.handleChange}
-        value={this.state.village}
+        value={this.state.village_name}
         type="text"
         placeholder="Patient village name"
         /> 
@@ -228,21 +312,29 @@ class CreatePatient extends React.Component {
         </Form.Group>
 
         <ButtonToolbar>
-        <Button variant="primary" type="submit">
-        Create
-        </Button>
+            {
+                this.state.minor ? <Link to={{
+                    pathname: '/caregiver',
+                    patient: this.state,
+                    national_id: this.props.national_id
+                }}>
+                    <Button className="float-right" variant="success">
+                        Continue
+                    </Button>
+                </Link> : <Button variant="primary" type="submit">Create</Button>
+            }
+
 
         </ButtonToolbar>
         <br></br>
         </Form>
 
-        {
-            this.state.createdPatient === false ? '' : <Redirect to={{
-                pathname: '/alaf/',
-                patient: this.state.createPatient
-            }}
-            />
-        }
+
+                {this.state.redirect ? <Redirect
+                        to={{
+                            pathname: `patient/${this.props.national_id}`
+                        }}
+                    /> : '' }
 
         </div>
         )

@@ -77,7 +77,7 @@ class ViewPatient extends React.Component {
         // Fetch patient object.
                     // Fetch patient visits array via patient ID. /*
                     if (this.props.location.patient.ID != undefined) {
-                    this.Auth.fetch(`http://localhost:3000/visit/patient/${this.state.patient.ID}`)
+                    this.Auth.fetch(`http://localhost:3000/visit/patient/${this.props.location.patient.ID}`)
                     .then(
                         (fetchedVisits) => {
                             this.setState({
@@ -91,7 +91,7 @@ class ViewPatient extends React.Component {
                         })
 
                     // Fetch patient caregiver object.
-                    this.Auth.fetch(`http://localhost:3000/caregiver/${this.state.patient.ID}`)
+                    this.Auth.fetch(`http://localhost:3000/caregiver/${this.props.location.patient.ID}`)
                     .then(
                         (fetchedCaregiver) => {
                             this.setState({
