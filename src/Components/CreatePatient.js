@@ -100,7 +100,7 @@ class CreatePatient extends React.Component {
                 body: JSON.stringify(patient)
             }); */
             console.log('error, creating in local DB');
-            const openRequest = openDb("amedic", 1);
+            const openRequest = openDb("amedic", 2);
             openRequest.then(db => {
                 db.transaction("patient", "readwrite").objectStore("patient").put({
                     national_id: patient.national_id,
