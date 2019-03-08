@@ -98,67 +98,77 @@ class Login extends React.Component {
                   var store = upgradeDB.createObjectStore('diagnosis', {
                       keyPath: 'ID'
                   });
-                  var store = upgradeDB.createObjectStore('caregiver', {
-                      keyPath: 'national_id'
-                  });
               })
               });
 
+            this.Auth.fetch('http://localhost:3000/caregiver')
+            .then(
+                (result) => {
+                  openDb('amedic', 2, function(upgradeDB) {
+                      var store = upgradeDB.createObjectStore('caregiver', {
+                          keyPath: 'national_id'
+                      });
+                      for(var i = 0; i < result.length; i++) {
+                          store.put({national_id: result[i].national_id, name: result[i].name, relation_to_patient: result[i].relation_to_patient, date_of_birth: result[i].date_of_birth, mobile_no: result[i].mobile_no});
+                      }
+                  })
+
+              })
         })
-        .catch(err =>{
-            console.log(err);
-            this.setState({loginMessage: 'Could not log you in. Make sure you enter a correct username and password.'})
-        })
-
-    }
-
-
-    render() {
-        const { validated } = this.state;
-        return (
-            <div class="container">
-            <h1>Log in</h1>
-            <Form
-            noValidate
-            validated={validated}
-            onSubmit={e => this.handleSubmit(e)}
-            >
-            <Form.Label>Login ID</Form.Label>
-            <Form.Control
-            required
-            name="login_id"
-            onChange={this.handleChange}
-            value={this.state.login_id}
-            type="text"
-            placeholder="Enter login ID"
-            />
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-            required
-            name="password"
-            onChange={this.handleChange}
-            value={this.state.password}
-            type="password"
-            placeholder="Enter password"
-            />
-            <br />
-            <Button variant="primary" onClick={this.handleClick}>
-            Login
-            </Button>
-
-            </Form>
-
-            <br />
-            {this.state.loginMessage != undefined ?
-                <Alert dismissible variant="danger">
-                <Alert.Heading>Error</Alert.Heading>
-                <p>{this.state.loginMessage}</p>
-                </Alert> : ''}
-
-                </div>
-                )
-            }
+            .catch(err =>{
+                console.log(err);
+                this.setState({loginMessage: 'Could not log you in. Make sure you enter a correct username and password.'})
+            })
 
         }
 
-        export default Login
+
+        render() {
+            const { validated } = this.state;
+            return (
+                <div class="container">
+                <h1>Log in</h1>
+                <Form
+                noValidate
+                validated={validated}
+                onSubmit={e => this.handleSubmit(e)}
+                >
+                <Form.Label>Login ID</Form.Label>
+                <Form.Control
+                required
+                name="login_id"
+                onChange={this.handleChange}
+                value={this.state.login_id}
+                type="text"
+                placeholder="Enter login ID"
+                />
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                required
+                name="password"
+                onChange={this.handleChange}
+                value={this.state.password}
+                type="password"
+                placeholder="Enter password"
+                />
+                <br />
+                <Button variant="primary" onClick={this.handleClick}>
+                Login
+                </Button>
+
+                </Form>
+
+                <br />
+                {this.state.loginMessage != undefined ?
+                    <Alert dismissible variant="danger">
+                    <Alert.Heading>Error</Alert.Heading>
+                    <p>{this.state.loginMessage}</p>
+                    </Alert> : ''}
+
+                    </div>
+                    )
+                }
+
+            }
+
+            export default Login

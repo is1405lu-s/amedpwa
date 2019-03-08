@@ -49,8 +49,13 @@ class PatientFind extends React.Component {
           },
           (error) => {
             console.log('error, trying local DB');
+<<<<<<< HEAD
             var key = parseInt(this.state.national_id);
             const openRequest = openDb('amedic', 1);
+=======
+            var key = parseInt(this.state.nationalID);
+            const openRequest = openDb('amedic', 2);
+>>>>>>> 7776548c913c36694dca2705c94856a50f925ce2
             openRequest.then(db => {
               const tx = db.transaction('patient', 'readonly');
               const store = tx.objectStore('patient');
