@@ -8,6 +8,8 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
 import {openDb} from 'idb';
 import fetch from '../fetchWithTimeout';
+//import fetchSync from 'fetch-sync'
+
 
 class CreatePatient extends React.Component {
 
@@ -22,7 +24,7 @@ class CreatePatient extends React.Component {
             date_of_birth: new Date(),     // DATE
 
             createdPatient: false, 
-            isLoading: false
+            isLoading: false,
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -91,6 +93,12 @@ class CreatePatient extends React.Component {
                 isLoading: false});
         },
         (error) => {
+            /*
+            const post = fetchSync('http://localhost:3000/patient', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(patient)
+            }); */
             console.log('error, creating in local DB');
             const openRequest = openDb("amedic", 1);
             openRequest.then(db => {
@@ -225,7 +233,7 @@ class CreatePatient extends React.Component {
         </Button>
 
         </ButtonToolbar>
-                <br></br>
+        <br></br>
         </Form>
 
         {

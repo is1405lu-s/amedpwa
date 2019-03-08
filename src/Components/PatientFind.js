@@ -122,7 +122,8 @@ class PatientFind extends React.Component {
 
       {
        this.state.foundPatient === null ? '' : <Redirect to={{
-        pathname: `/patient/${this.state.nationalID}`
+        pathname: `/patient/${this.state.nationalID}`, 
+        patient: this.state.foundPatient
       }}
       />
     }
