@@ -22,7 +22,7 @@ class CreatePatient extends React.Component {
             date_of_birth: new Date(),     // DATE
 
             createdPatient: false, 
-            isLoading: false
+            isLoading: false,
         }
 
         this.handleChange = this.handleChange.bind(this)

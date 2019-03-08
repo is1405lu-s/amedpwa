@@ -10,6 +10,9 @@ if (workbox) {
 
 const precacheResources = [
 '/',
+'Components/Login.js',
+'Components/AuthService.js',
+'Components/withAuth.js',
 'Components/CreatePatient.js',
 'Component/DiagnoseComponent.js',
 'Components/Header.js',
@@ -70,14 +73,13 @@ const queue = new workbox.backgroundSync.Queue('myQueueName');
 //disconnect to internet, do stuff, connect to internet
 self.addEventListener('fetch', (event) => {
 
-  const promiseChain = fetch(event.request.clone())
-  .catch((err) => {
-    return queue.addRequest(event.request);
-  });
+            const promiseChain = fetch(event.request.clone())
+                .catch((err) => {
+                    return queue.addRequest(event.request);
+                });
+            event.waitUntil(promiseChain);
 
-  event.waitUntil(promiseChain);
-
-});
+    })
 
 function readDB(key) {
   var request = idb.openDb('amedic', 1);
