@@ -27,9 +27,11 @@ class CreatePatient extends React.Component {
             date_of_birth: new Date(),     // DATE
             caregivercounter: 1,
 
+            createPatient: {}, 
             minor: false,
             createdPatient: false, 
             isLoading: false,
+            redirect: false
         }
         this.Auth = new AuthService();
 
@@ -70,9 +72,8 @@ class CreatePatient extends React.Component {
                 village_name: '',    // VARCHAR
                 date_of_birth: '',     // DATE
                 national_id: '',
-                caregivercounter: 0,
-                redirect: false
-            }
+                caregivercounter: 0
+           }
             )
     }
     checkBirthdate(date) {
@@ -98,6 +99,7 @@ class CreatePatient extends React.Component {
         }
 
     }
+
     handleSubmit(event) {
         event.preventDefault();
 
@@ -108,7 +110,7 @@ class CreatePatient extends React.Component {
             national_id: nID,             // INT
             mobile_no: mNo,               // INT
             sex: this.state.sex,                    // VARCHAR
-            village: this.state.village,            // VARCHAR
+            village_name: this.state.village_name,            // VARCHAR
             date_of_birth: this.state.date_of_birth,
         }
 
@@ -123,11 +125,12 @@ class CreatePatient extends React.Component {
         }, 5000)
         .then(
           (result) => {
-            console.log(result);
+            console.log('creating patient');
             this.setState({
                 createdPatient: true,
                 createPatient: patient, 
-                isLoading: false});
+                isLoading: false, 
+            })
         },
         (error) => {
             /*
@@ -140,18 +143,19 @@ class CreatePatient extends React.Component {
             const openRequest = openDb("amedic", 2);
             openRequest.then(db => {
                 db.transaction("patient", "readwrite").objectStore("patient").put({
-                    national_id: patient.national_id,
+                    national_id: nID,
                     name: patient.name, 
-                    mobile_no: patient.mobile_no,
+                    mobile_no: mNo,
                     sex: patient.sex, 
-                    village: patient.village, 
+                    village: patient.village_name, 
                     date_of_birth: patient.date_of_birth
                 });
             })
             this.setState({
                 createdPatient: true,
                 createPatient: patient, 
-                isLoading: false});
+                isLoading: false,
+            });
         })
     }
     componentDidMount() {
@@ -174,34 +178,6 @@ class CreatePatient extends React.Component {
 
     }
 
-    handleSubmit(event) {
-        // TODO: Implement validation here.
-        event.preventDefault()
-        //event.stopPropagation()
-
-        let patient = {
-            name:this.state.name,
-            national_id:this.props.national_id,
-            mobile_no:this.state.mobile_no,
-            sex:this.state.sex,
-            village_name:this.state.village_name,
-            date_of_birth:this.state.date_of_birth
-        }
-
-        this.Auth.fetch('http://localhost:3000/patient/', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(patient)
-        }).then(response => {
-            this.setState({redirect: true})
-            //this.props.history.push(`/patient/${response.national_id}`);
-        })
-    }
-
-
     render() {
 
         const {isLoading} = this.state; 
@@ -219,7 +195,7 @@ class CreatePatient extends React.Component {
         <Form onSubmit={this.handleSubmit}>
 
         <Form.Group controlId="formStudyID">
-        <Form.Label>Study ID</Form.Label>
+        <Form.Label>National ID</Form.Label>
         <Form.Control 
         readOnly 
         name="national_id"
@@ -330,11 +306,11 @@ class CreatePatient extends React.Component {
         </Form>
 
 
-                {this.state.redirect ? <Redirect
-                        to={{
-                            pathname: `patient/${this.props.national_id}`
+                {this.state.createdPatient === false ? '' : <Redirect to={{
+                    pathname: `patient/${this.props.national_id}`,
+                        patient: this.state.createPatient
                         }}
-                    /> : '' }
+                    />}
 
         </div>
         )

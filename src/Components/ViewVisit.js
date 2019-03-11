@@ -171,7 +171,8 @@ class ViewVisit extends React.Component {
 
                 <div class="text-center">
                     { this.state.patient != null ?
-                        <Link to={{ pathname:`/patient/${this.state.patient.national_id}` }}>
+                        <Link to={{ pathname:`/patient/${this.state.patient.national_id}`,
+        patient: this.state.patient }}>
                             <Button variant="primary">Go to patient page</Button>
                         </Link> : ''
                     }
@@ -197,8 +198,8 @@ class ViewVisit extends React.Component {
                         visit: fetchedVisit[0]
                     })
 
-                    this.fetchTreatments(fetchedVisit[0].diagnosis_id)
-                    this.fetchDiagnoses(fetchedVisit[0].diagnosis_id)
+                    this.fetchTreatments(this.props.location.diagnosisvisit.diagnosis_id)
+                    this.fetchDiagnoses(this.props.location.diagnosisvisit.diagnosis_id)
                     this.fetchSymptoms(fetchedVisit[0].symptoms_sheet_id)
 
                     this.setState({

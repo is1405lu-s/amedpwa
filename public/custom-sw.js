@@ -68,6 +68,7 @@ function createDB() {
           })
         });
 }
+/*
 
 const queue = new workbox.backgroundSync.Queue('myQueueName');
 
@@ -81,6 +82,7 @@ self.addEventListener('fetch', (event) => {
             event.waitUntil(promiseChain);
 
     })
+    */
 
 function readDB(key) {
   var request = idb.openDb('amedic', 1);

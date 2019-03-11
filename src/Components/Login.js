@@ -61,7 +61,6 @@ class Login extends React.Component {
         .then(res => {
             if (res.status === 200) {
                 this.props.history.push('/');
-                console.log('här');
             } else {
                 const error = new Error(res.error);
                 throw error;

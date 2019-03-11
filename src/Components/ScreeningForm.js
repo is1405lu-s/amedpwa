@@ -194,7 +194,7 @@ class ScreeningForm extends React.Component {
                     </Form.Group>
 
                     <Form.Group controlId="formFever">
-                        <Form.Label>Does the patient have a fever?</Form.Label>
+                        <Form.Label>Does the patient have a fever? Enter degrees</Form.Label>
                         <Form.Control
                             required
                             name="fever"
