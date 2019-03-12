@@ -20,7 +20,8 @@ class ViewPatient extends React.Component {
                 id: ''
             },
             village: {},
-            visits: null
+            visits: null, 
+            diagnosis_id: 2
         }
 
         this.printOutCaregivers = this.printOutCaregivers.bind(this)
@@ -59,7 +60,7 @@ class ViewPatient extends React.Component {
             });
                 return this.state.visits.map(function(visit) {
                     return(
-                        <VisitTD visit={visit} key={visit.patient_id + visit.user_id + visit.symptoms_sheet_id} />
+                        <VisitTD visit={visit} key={visit.patient_id + visit.user_id + visit.symptoms_sheet_id}/>
                         )
                 })
             }

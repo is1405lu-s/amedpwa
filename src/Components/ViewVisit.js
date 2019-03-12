@@ -198,8 +198,20 @@ class ViewVisit extends React.Component {
                         visit: fetchedVisit[0]
                     })
 
+                    console.log(this.props.location)
+                console.log(this.props.match.params.id)
+                if(this.props.location.diagnosisvisit != undefined) {
                     this.fetchTreatments(this.props.location.diagnosisvisit.diagnosis_id)
                     this.fetchDiagnoses(this.props.location.diagnosisvisit.diagnosis_id)
+                }
+                else {
+                    this.Auth.fetch(`http://localhost:3000/diagnosisvisit/${this.props.match.params.id}`)
+                    .then( 
+                        (diagnosisvisit) => {
+                        this.fetchTreatments(diagnosisvisit.diagnosis_id)
+                        this.fetchDiagnoses(diagnosisvisit.diagnosis_id)                        
+                    })
+                }
                     this.fetchSymptoms(fetchedVisit[0].symptoms_sheet_id)
 
                     this.setState({
