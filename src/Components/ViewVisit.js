@@ -37,35 +37,35 @@ class ViewVisit extends React.Component {
             return this.state.diagnoses.map(function(diagnosis) {
                 return(
                     <div key={diagnosis.ID}>
-                        <DiagnoseComponent diagnosis={diagnosis} />
+                    <DiagnoseComponent diagnosis={diagnosis} />
                     </div>
-                )
-            })
-        }
-    }
-
-    printOutTreatments() {
-
-        if(this.state.treatments.length < 1) {
-            return (<p>Could not find any treatments.</p>)
+                    )
+                })
+            }
         }
 
-        // Loop through array, printing out each visit.
-        if(this.state.treatments != null) {
-            return this.state.treatments.map(function(treatment) {
-                return(
-                    <div key={treatment.ID}>
+        printOutTreatments() {
+
+            if(this.state.treatments.length < 1) {
+                return (<p>Could not find any treatments.</p>)
+            }
+
+            // Loop through array, printing out each visit.
+            if(this.state.treatments != null) {
+                return this.state.treatments.map(function(treatment) {
+                    return(
+                        <div key={treatment.ID}>
                         <TreatmentComponent treatment={treatment} />
-                    </div>
-                )
-            })
-        }
-    }
+                        </div>
+                        )
+                    })
+                }
+            }
 
 
-    fetchTreatments(diagnosis_id) {
-        // Fetch treatmentdiagnosis
-        if(this.state.visit != null) {
+            fetchTreatments(diagnosis_id) {
+                // Fetch treatmentdiagnosis
+                if(this.state.visit != null) {
             this.Auth.fetch(`http://localhost:3000/treatmentdiagnosis/${diagnosis_id}`)
                 .then(
                     (fetchedTreatmentDiagnosis) => {
@@ -74,8 +74,8 @@ class ViewVisit extends React.Component {
                         fetchedTreatmentDiagnosis.map((treatmentdiagnosis) => {
                             // Should push each treatment into the state treatment array.
                             this.Auth.fetch(`http://localhost:3000/treatment/${treatmentdiagnosis.treatment_id}`)
-                                .then(
-                                    (fetchedTreatments) => {
+                            .then(
+                                (fetchedTreatments) => {
                                         // Change this to push each treatment into the array instead of replacing it:
                                         this.setState({
                                             treatments: fetchedTreatments
@@ -86,7 +86,7 @@ class ViewVisit extends React.Component {
                                             error
                                         })
                                     }
-                                )
+                                    )
                         })
 
                     },
@@ -95,12 +95,12 @@ class ViewVisit extends React.Component {
                             error
                         })
                     }
-                )
+                    )
+            }
         }
-    }
 
-    fetchDiagnoses(diagnosis_id) {
-        if(this.state.visit != null) {
+        fetchDiagnoses(diagnosis_id) {
+            if(this.state.visit != null) {
             // Fetch diagnosis
             this.Auth.fetch(`http://localhost:3000/diagnosis/${diagnosis_id}`)
                 .then(
@@ -114,13 +114,13 @@ class ViewVisit extends React.Component {
                             error
                         })
                     }
-                )
+                    )
+            }
+
         }
 
-    }
-
-    fetchSymptoms(symptoms_sheet_id) {
-        if(this.state.visit != null) {
+        fetchSymptoms(symptoms_sheet_id) {
+            if(this.state.visit != null) {
             // Fetch symptom sheet
             this.Auth.fetch(`http://localhost:3000/symptoms/${symptoms_sheet_id}`)
                 .then(
@@ -134,15 +134,15 @@ class ViewVisit extends React.Component {
                             error
                         })
                     }
-                )
+                    )
+            }
+
         }
 
-    }
+        render() {
 
-    render() {
-
-        return (
-            <Container>
+            return (
+                <Container>
                 {
                     this.Auth.loggedIn() ? '' : <Redirect to='/login' />
                 }
@@ -166,39 +166,39 @@ class ViewVisit extends React.Component {
 
                 {
                     this.state.symptoms != null ?
-                        <div><h3>Symptoms Sheet</h3><SymptomComponent symptomsSheet={this.state.symptoms} /></div> : ''
+                    <div><h3>Symptoms Sheet</h3><SymptomComponent symptomsSheet={this.state.symptoms} /></div> : ''
                 }
 
                 <div class="text-center">
-                    { this.state.patient != null ?
-                        <Link to={{ pathname:`/patient/${this.state.patient.national_id}`,
-        patient: this.state.patient }}>
-                            <Button variant="primary">Go to patient page</Button>
-                        </Link> : ''
-                    }
+                { this.state.patient != null ?
+                    <Link to={{ pathname:`/patient/${this.state.patient.national_id}`,
+                    patient: this.state.patient }}>
+                    <Button variant="primary">Go to patient page</Button>
+                    </Link> : ''
+                }
 
-                    <br /><br />
+                <br /><br />
                 </div>
 
-            </Container>
-        )
-    }
+                </Container>
+                )
+            }
 
-    componentWillMount() {
+            componentWillMount() {
 
-    }
+            }
 
-    componentDidMount(){
+            componentDidMount(){
 
         this.Auth.fetch(`http://localhost:3000/visit/${this.props.match.params.id}`)
-            .then(
-                (fetchedVisit) => {
+        .then(
+            (fetchedVisit) => {
 
-                    this.setState({
-                        visit: fetchedVisit[0]
-                    })
+                this.setState({
+                    visit: fetchedVisit[0]
+                })
 
-                    console.log(this.props.location)
+                console.log(this.props.location)
                 console.log(this.props.match.params.id)
                 if(this.props.location.diagnosisvisit != undefined) {
                     this.fetchTreatments(this.props.location.diagnosisvisit.diagnosis_id)
@@ -208,38 +208,38 @@ class ViewVisit extends React.Component {
                     this.Auth.fetch(`http://localhost:3000/diagnosisvisit/${this.props.match.params.id}`)
                     .then( 
                         (diagnosisvisit) => {
-                        this.fetchTreatments(diagnosisvisit.diagnosis_id)
-                        this.fetchDiagnoses(diagnosisvisit.diagnosis_id)                        
-                    })
+                            this.fetchTreatments(diagnosisvisit[0].diagnosis_id)
+                            this.fetchDiagnoses(diagnosisvisit[0].diagnosis_id)                        
+                        })
                 }
-                    this.fetchSymptoms(fetchedVisit[0].symptoms_sheet_id)
+                this.fetchSymptoms(fetchedVisit[0].symptoms_sheet_id)
 
-                    this.setState({
-                        patient_id: fetchedVisit[0].patient_id
+                this.setState({
+                    patient_id: fetchedVisit[0].patient_id
+                })
+
+                this.Auth.fetch(`http://localhost:3000/patient/${fetchedVisit[0].patient_id}`)
+                .then(
+                    (fetchedPatient) => {
+                        this.setState({
+                            patient: fetchedPatient
+                        })
+
+                    },
+                    (error) => {
+                        this.setState({
+                            error
+                        })
                     })
 
-                    this.Auth.fetch(`http://localhost:3000/patient/${fetchedVisit[0].patient_id}`)
-                        .then(
-                            (fetchedPatient) => {
-                                this.setState({
-                                    patient: fetchedPatient
-                                })
+            },
+            (error) => {
+                console.log(error)
+                this.setState({
+                    error
+                })
 
-                            },
-                            (error) => {
-                                this.setState({
-                                    error
-                                })
-                            })
-
-                },
-                (error) => {
-                    console.log(error)
-                    this.setState({
-                        error
-                    })
-
-                }
+            }
             )
 
     }

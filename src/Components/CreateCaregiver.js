@@ -73,9 +73,9 @@ class CreateCaregiver extends React.Component {
             body: JSON.stringify(caregiver)
         }).then(response => {
             console.log('tried to create caregiver')
-            this.setState({caregiver_id: response.ID})
-        })
-
+            this.setState({
+                caregiver_id: response.ID, 
+            })
         var nID = parseInt(this.props.location.national_id)
         var mNo = parseInt(this.props.location.patient.mobile_no)
 
@@ -102,10 +102,11 @@ class CreateCaregiver extends React.Component {
             this.setState({
                 national_id: this.props.location.national_id,
                 patient_id: response.ID, 
-                createdPatient: patient
+                createdPatient: response
             })
             console.log(this.state.national_id)
             console.log(this.state.patient_id)
+            console.log(this.state.caregiver_id)
             
             if(this.state.patient_id != '' && this.state.caregiver_id != '') {
                 console.log('här')
@@ -130,7 +131,10 @@ class CreateCaregiver extends React.Component {
             }
 
             //this.props.history.push(`/patient/${this.props.location.patient.national_id}`);
+        })            
         })
+
+
 
 
     }
@@ -209,7 +213,6 @@ class CreateCaregiver extends React.Component {
              this.state.created === false ? '' : <Redirect to={{
                 pathname: `/patient/${this.state.national_id}`,
                 patient: this.state.createdPatient, 
-                caregiver: this.state.caregiver
             }}
             />
         }
