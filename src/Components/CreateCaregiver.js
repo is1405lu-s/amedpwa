@@ -51,6 +51,7 @@ class CreateCaregiver extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault()
+        console.log('trying to submit')
 
         var caregiver_nID = parseInt(this.state.national_id);
         var caregiver_mNo = parseInt(this.state.mobile_no)
@@ -59,7 +60,7 @@ class CreateCaregiver extends React.Component {
             name: this.state.name,
             national_id: caregiver_nID,
             relation_to_patient: this.state.relation_to_patient,
-            date_of_birth: this.state.date_of_birth,
+            date_of_birth: this.state.date_of_birth, //cannot be today(?)
             mobile_no: caregiver_mNo
         }
 
@@ -76,17 +77,17 @@ class CreateCaregiver extends React.Component {
             this.setState({
                 caregiver_id: response.ID, 
             })
-        var nID = parseInt(this.props.location.national_id)
-        var mNo = parseInt(this.props.location.patient.mobile_no)
+            var nID = parseInt(this.props.location.national_id)
+            var mNo = parseInt(this.props.location.patient.mobile_no)
 
-        let patient = {
-            name:this.props.location.patient.name,
-            national_id:nID,
-            mobile_no:mNo,
-            sex:this.props.location.patient.sex,
-            village_name:this.props.location.patient.village_name,
-            date_of_birth:this.props.location.patient.date_of_birth
-        }
+            let patient = {
+                name:this.props.location.patient.name,
+                national_id:nID,
+                mobile_no:mNo,
+                sex:this.props.location.patient.sex,
+                village_name:this.props.location.patient.village_name,
+                date_of_birth:this.props.location.patient.date_of_birth
+            }
 
         // Create patient
         this.Auth.fetch('http://localhost:3000/patient/', {
@@ -132,7 +133,7 @@ class CreateCaregiver extends React.Component {
 
             //this.props.history.push(`/patient/${this.props.location.patient.national_id}`);
         })            
-        })
+    })
 
 
 
@@ -210,9 +211,9 @@ class CreateCaregiver extends React.Component {
 
             </Form>
             {
-             this.state.created === false ? '' : <Redirect to={{
+               this.state.created === false ? '' : <Redirect to={{
                 pathname: `/patient/${this.state.national_id}`,
-                patient: this.state.createdPatient, 
+                patient: this.state.createdPatient 
             }}
             />
         }

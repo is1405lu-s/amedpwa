@@ -84,7 +84,7 @@ class ViewPatient extends React.Component {
     componentDidMount(){
 
 
-      if (this.props.location.patient != undefined) {
+      if (this.props.location.patient.ID != undefined) {
         console.log(this.props.location.patient);
         console.log(this.props.match.params.id);
         // Fetch patient object.
@@ -158,6 +158,7 @@ class ViewPatient extends React.Component {
                     this.setState({
                       patient: obj
                   })
+                    console.log(this.state.patient);
 
                 })
               }

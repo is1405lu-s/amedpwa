@@ -111,7 +111,7 @@ class CreatePatient extends React.Component {
             mobile_no: mNo,               // INT
             sex: this.state.sex,                    // VARCHAR
             village_name: this.state.village_name,            // VARCHAR
-            date_of_birth: this.state.date_of_birth,
+            date_of_birth: this.state.date_of_birth
         }
 
         this.setState({
@@ -124,11 +124,12 @@ class CreatePatient extends React.Component {
             body: JSON.stringify(patient)
         }, 5000)
         .then(
-          (result) => {
+          result => {
             console.log('creating patient');
+            console.log(result)
             this.setState({
                 createdPatient: true,
-                createPatient: patient, 
+                createPatient: result, 
                 isLoading: false, 
             })
         },
@@ -139,6 +140,8 @@ class CreatePatient extends React.Component {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(patient)
             }); */
+
+            patient.date_of_birth = JSON.stringify(this.state.date_of_birth).substr(1,11);
             console.log('error, creating in local DB');
             const openRequest = openDb("amedic", 2);
             openRequest.then(db => {
@@ -147,7 +150,7 @@ class CreatePatient extends React.Component {
                     name: patient.name, 
                     mobile_no: mNo,
                     sex: patient.sex, 
-                    village: patient.village_name, 
+                    village_name: patient.village_name, 
                     date_of_birth: patient.date_of_birth
                 });
             })
