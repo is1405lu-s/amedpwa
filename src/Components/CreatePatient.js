@@ -118,19 +118,21 @@ class CreatePatient extends React.Component {
           isLoading: true
       });
 
-        fetch('http://localhost:3000/patient', {
+        this.Auth.fetch('http://localhost:3000/patient/', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(patient)
         }, 5000)
-        .then(
-          result => {
-            console.log('creating patient');
+        .then(result => {
+            console.log('creating patient')
             console.log(result)
             this.setState({
                 createdPatient: true,
                 createPatient: result, 
-                isLoading: false, 
+                isLoading: false 
             })
         },
         (error) => {
