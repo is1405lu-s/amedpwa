@@ -27,18 +27,13 @@ class PatientFind extends React.Component {
 
   handleSubmit(event) {
 
-        const controller = new AbortController();
-        const signal = controller.signal;
-
-        setTimeout(() => controller.abort(), 5000); //5 sek
-
         this.setState({
           isLoading: true
         });
 
         console.log(this.state.national_id);
 
-        this.Auth.fetch(`http://localhost:3000/patient/nationalid/${this.state.national_id}`, { signal })
+        this.Auth.fetch(`http://localhost:3000/patient/nationalid/${this.state.national_id}`)
         .then(
           (result) => {
             console.log(result)

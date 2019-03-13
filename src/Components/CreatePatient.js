@@ -30,8 +30,7 @@ class CreatePatient extends React.Component {
             createPatient: {}, 
             minor: false,
             createdPatient: false, 
-            isLoading: false,
-            redirect: false
+            isLoading: false
         }
         this.Auth = new AuthService();
 
@@ -103,6 +102,11 @@ class CreatePatient extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        setTimeout(() => controller.abort(), 5000); //5 sek
+
         var nID = parseInt(this.props.national_id);
         var mNo = parseInt(this.state.mobile_no)
         var patient = {
@@ -125,7 +129,7 @@ class CreatePatient extends React.Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(patient)
-        }, 5000)
+        }, { signal })
         .then(result => {
             console.log('creating patient')
             console.log(result)
@@ -159,10 +163,11 @@ class CreatePatient extends React.Component {
             this.setState({
                 createdPatient: true,
                 createPatient: patient, 
-                isLoading: false,
+                isLoading: false
             });
         })
     }
+
     componentDidMount() {
 
     }

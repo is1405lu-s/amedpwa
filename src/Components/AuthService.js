@@ -76,6 +76,12 @@ export default class AuthService {
 
     fetch(url, options) {
         // performs api calls sending the required authentication headers
+
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        setTimeout(() => controller.abort(), 5000); //5 sek
+
         const headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -89,7 +95,8 @@ export default class AuthService {
 
         return fetch(url, {
             headers,
-            ...options
+            ...options, 
+            signal
         })
             .then(this._checkStatus)
             .then(response => response.json())
