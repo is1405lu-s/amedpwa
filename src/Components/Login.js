@@ -91,12 +91,6 @@ class Login extends React.Component {
                     for(var i = 0; i < result.length; i++) {
                       store.put({national_id: result[i].national_id, name: result[i].name, mobile_no: result[i].mobile_no, sex: result[i].sex, village_name: result[i].village_name, date_of_birth: result[i].date_of_birth});
                   }
-                  var store = upgradeDB.createObjectStore('symptoms_sheet', {
-                      keyPath: 'ID'
-                  });
-                  var store = upgradeDB.createObjectStore('diagnosis', {
-                      keyPath: 'ID'
-                  });
               })
               });
 
