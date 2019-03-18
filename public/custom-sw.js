@@ -45,29 +45,9 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
   console.log('Service Worker: Activated');
-  //createDB();
   event.waitUntil(self.clients.claim())
 });
 
-function createDB() {
-  fetch('http://localhost:3000/patient').then(res => res.json())
-  .then(
-    (result) => {
-      idb.openDb('amedic', 1, function(upgradeDB) {
-        console.log(result[2].name);
-        console.log('skipped');
-            var store = upgradeDB.createObjectStore('patient', {
-              keyPath: 'nationalID'
-            });
-            for(var i = 0; i < result.length; i++) {
-              store.put({national_id: result[i].national_id, name: result[i].name, mobile_no: result[i].mobile_no, sex: result[i].sex, village: result[i].village, date_of_birth: result[i].date_of_birth});
-            }
-            var store = upgradeDB.createObjectStore('symptoms_sheet', {
-              keyPath: 'ID'
-            });
-          })
-        });
-}
 /*
 
 const queue = new workbox.backgroundSync.Queue('myQueueName');
