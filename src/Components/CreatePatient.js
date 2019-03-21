@@ -140,12 +140,6 @@ class CreatePatient extends React.Component {
             })
         },
         (error) => {
-            /*
-            const post = fetchSync('http://localhost:3000/patient', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(patient)
-            }); */
 
             patient.date_of_birth = JSON.stringify(this.state.date_of_birth).substr(1,11);
             console.log('error, creating in local DB');

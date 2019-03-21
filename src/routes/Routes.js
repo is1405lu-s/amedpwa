@@ -1,5 +1,5 @@
+// Routing the different events to the correct page
 import React from 'react'
-
 import Header from '../Components/Header'
 import ScreeningForm from '../Components/ScreeningForm'
 import PatientFind from '../Components/PatientFind'

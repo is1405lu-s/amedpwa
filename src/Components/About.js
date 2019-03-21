@@ -1,6 +1,5 @@
 import React from "react";
 import {Button, Container} from "react-bootstrap";
-import {Link, Redirect} from "react-router-dom";
 
 class About extends React.Component {
 
@@ -8,7 +7,8 @@ class About extends React.Component {
         return (
             <Container>
                 <h1 align = "center">Meet the team</h1>
-                <p><br/>
+                <p>
+                    <br/>
                 <b>Matilda Svensson, co-founder</b>
                     <br/>
                     Experience working for NGOs and the Swedish Government. Has a Bachelor’s degree in HR and is currently studying to be a nurse. Became part of this project to learn about alternative ways to offer healthcare and to actually make a difference.

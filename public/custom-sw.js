@@ -7,7 +7,7 @@ if (workbox) {
 } else {
   console.log(`Boo! Workbox didn't load 😬`);
 }
-
+// prechached resources
 const precacheResources = [
 '/',
 'Components/Login.js',
@@ -48,7 +48,7 @@ self.addEventListener('activate', event => {
   //createDB();
   event.waitUntil(self.clients.claim())
 });
-
+//Create a local database to the browser/app filled with patients
 function createDB() {
   fetch('http://localhost:3000/patient').then(res => res.json())
   .then(
@@ -68,37 +68,6 @@ function createDB() {
           })
         });
 }
-/*
-
-const queue = new workbox.backgroundSync.Queue('myQueueName');
-
-//disconnect to internet, do stuff, connect to internet
-self.addEventListener('fetch', (event) => {
-
-            const promiseChain = fetch(event.request.clone())
-                .catch((err) => {
-                    return queue.addRequest(event.request);
-                });
-            event.waitUntil(promiseChain);
-
-    })
-    */
-/*
-    self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then(function(resp) {
-      return resp || fetch(event.request).then(function(response) {
-        return caches.open('v1').then(function(cache) {
-          cache.put(event.request, response.clone());
-          return response;
-        });  
-      });
-    })
-  );
-
-
-    })
-    */
 
 function readDB(key) {
   var request = idb.openDb('amedic', 1);

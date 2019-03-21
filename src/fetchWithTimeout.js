@@ -6,3 +6,4 @@ export default function (url, options, timeout = 7000) {
         )
     ]);
 }
+// Sets a limit to any fetch calls to make the app run smoother

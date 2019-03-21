@@ -41,7 +41,7 @@ class PatientFind extends React.Component {
               foundPatient: result, 
               isLoading: false
             });
-          },
+          }, // check local database if there's no connection to REST API
           (error) => {
             console.log('error, trying local DB');
             var key = parseInt(this.state.national_id);
