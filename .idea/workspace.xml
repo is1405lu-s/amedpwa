@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae8d8989-19ec-42d5-982c-cee6657a9251" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Database model.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/custom-sw.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/custom-sw.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/idb.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/idb.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/About.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/About.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/CreatePatient.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/CreatePatient.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/PatientFind.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/PatientFind.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Components/ViewPatient.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/ViewPatient.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/fetchWithTimeout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/fetchWithTimeout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/Routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/Routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -22,11 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/custom-sw.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="70" selection-start-line="70" selection-end-line="70" />
+            <state relative-caret-position="-283">
+              <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
             </state>
           </provider>
         </entry>
@@ -40,7 +39,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/index.html">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
@@ -159,8 +158,8 @@
         <option value="$PROJECT_DIR$/src/Components/AuthService.js" />
         <option value="$PROJECT_DIR$/src/Components/CreatePatient.js" />
         <option value="$PROJECT_DIR$/src/Components/PatientFind.js" />
-        <option value="$PROJECT_DIR$/public/custom-sw.js" />
         <option value="$PROJECT_DIR$/public/idb.js" />
+        <option value="$PROJECT_DIR$/public/custom-sw.js" />
       </list>
     </option>
   </component>
@@ -223,15 +222,16 @@
       <workItem from="1551950822709" duration="30266000" />
       <workItem from="1552415204448" duration="8808000" />
       <workItem from="1552733699693" duration="66000" />
-      <workItem from="1553159992171" duration="1980000" />
+      <workItem from="1553159992171" duration="2067000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66702000" />
+    <option name="totallyTimeSpent" value="66789000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="68" y="28" width="1400" height="784" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24908425" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -462,13 +462,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/custom-sw.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="70" selection-start-line="70" selection-end-line="70" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/idb.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3213">
@@ -478,6 +471,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/index.html">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/custom-sw.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-283">
+          <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="70" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>

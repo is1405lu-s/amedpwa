@@ -146,7 +146,7 @@ class ViewPatient extends React.Component {
                             })
                         }) 
                 }  else {
-                    console.log('hi');
+                    console.log('checking local db');
                     console.log(this.props.location.patient);
                     var key = parseInt(this.props.match.params.id);
                     const openRequest = openDb('amedic', 2);

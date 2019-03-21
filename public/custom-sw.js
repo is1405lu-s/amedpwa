@@ -69,6 +69,19 @@ function createDB() {
         });
 }
 
+//disconnect to internet, do stuff, connect to internet
+self.addEventListener('fetch', (event) => {
+
+            const promiseChain = fetch(event.request.clone())
+                .catch((err) => {
+                    return queue.addRequest(event.request);
+                });
+            event.waitUntil(promiseChain);
+
+    })
+    
+>>>>>>> 5a094fd6c5ddd21521f1fdd9021ca0a5f5bc5680
+
 function readDB(key) {
   var request = idb.openDb('amedic', 1);
   
