@@ -14,7 +14,7 @@ Create a database in Microsoft Azure according to the UML-model below:
 
 To change the database connection to your database, change the attributes in the connect.js file in the API-folder.
 
-To setup the application:
+### To setup the application:
 OBS! Some of the commands may be for Windows users only.  
 - Retrieve the two repositories from Github. For ease, save them in the same folder with the pathway C:\Users\'user name'. 
 - Open a  Command Line Tool window
