@@ -16,7 +16,7 @@ To change the database connection to your database, change the attributes in the
 
 To setup the application:
 OBS! Some of the commands may be for Windows users only.  
-- Retrieve the two repositories from Github. For ease, save them in the same folder with the pathway C:\Users\*user name*. 
+- Retrieve the two repositories from Github. For ease, save them in the same folder with the pathway C:\Users\ *user name*. 
 - Open a  Command Line Tool window
 - Type in the pathway to the API-folder (in Windows OS using the command ‘cd’ *folder name* without the apostrophes)
 - At the root of the project, type in ‘npm install’
