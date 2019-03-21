@@ -9,7 +9,7 @@ The project consists of two folders, which are accessible in the following links
 You will need to install the following: 
 - Node.js including npm
 
-Create a database in Microsoft Azure according to the Database model.png in this folder. 
+Create a database in Microsoft Azure according to the UML-model below:
 ![alt text](https://github.com/is1405lu-s/amedpwa/blob/master/Database%20model.png)
 
 To change the database connection to your database, change the attributes in the connect.js file in the API-folder.
