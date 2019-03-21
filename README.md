@@ -29,7 +29,7 @@ OBS! Some of the commands may be for Windows users only.
 - The application will open in localhost:3001
 - You’ll have to have added a user manually to gain full access to the whole application
 
-For the next version: 
+### Possible improvements for the next version: 
 - Better user response
 - Communication channel between CHW and HE, e.g. possibility to call HE through the application
 - Fix with the Background sync in the Service Worker, sync between the MySQL- and NoSQL-databases
