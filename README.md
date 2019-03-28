@@ -1,18 +1,18 @@
 ﻿## A Medic Mobile App
 
-This PWA (Progressive Web App) is written using ** Microsoft Azure (MySQL) ** and ** Node.js ** as backend with ** React ** as frontend. Basic knowledge with these is required.
+This PWA (Progressive Web App) is written using Microsoft Azure (MySQL) and Node.js as backend with React as frontend. Basic knowledge with these is required.
 
 The project consists of two folders, which are accessible in the following links: 
 - API: https://github.com/joelklingberg/amedicapi 
 - This folder, PWA: https://github.com/is1405lu-s/amedpwa 
 
 You will need to install the following: 
-- ** Node.js ** including npm
+- Node.js including npm
 
 Create a database in Microsoft Azure according to the UML-model below:
 ![alt text](https://github.com/is1405lu-s/amedpwa/blob/master/Database%20model.png)
 
-To change the database connection to your database, change the attributes in the connect.js file in the API-folder.
+To change the database connection to your database, change the attributes in the *connect.js* file in the API-folder.
 
 ### To setup the application:
 **OBS!** Some of the commands may be for Windows users only. Do not add the apostrophes to the commands.
