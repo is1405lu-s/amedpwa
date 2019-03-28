@@ -73,7 +73,9 @@ function createDB() {
 const queue = new workbox.backgroundSync.Queue('myQueueName');
 
 //disconnect to internet, do stuff, connect to internet
+/*
 self.addEventListener('fetch', (event) => {
+
 
             const promiseChain = fetch(event.request.clone())
                 .catch((err) => {
@@ -82,6 +84,7 @@ self.addEventListener('fetch', (event) => {
             event.waitUntil(promiseChain);
 
     })
+    */
     
 
 function readDB(key) {
