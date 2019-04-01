@@ -79,8 +79,7 @@ self.addEventListener('fetch', (event) => {
             event.waitUntil(promiseChain);
 
     })
-    
->>>>>>> 5a094fd6c5ddd21521f1fdd9021ca0a5f5bc5680
+
 
 function readDB(key) {
   var request = idb.openDb('amedic', 1);
