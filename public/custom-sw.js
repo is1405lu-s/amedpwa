@@ -70,7 +70,9 @@ function createDB() {
 }
 
 //disconnect to internet, do stuff, connect to internet
+
 self.addEventListener('fetch', (event) => {
+
 
             const promiseChain = fetch(event.request.clone())
                 .catch((err) => {
